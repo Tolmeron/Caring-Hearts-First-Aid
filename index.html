@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic First Aid Awareness Course — Caring Hearts of Utah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDF0E7;
+    --paper-raised:#F7F8F3;
+    --ink:#16241F;
+    --ink-soft:#4B5A52;
+    --forest:#1F3A34;
+    --forest-deep:#132623;
+    --amber:#B5541F;
+    --amber-soft:#E8B486;
+    --pulse:#C1392B;
+    --success:#3C7A5C;
+    --success-soft:#DCEAE1;
+    --line:#CBD2C7;
+    --radius:14px;
+    --display: 'Fraunces', serif;
+    --body: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--body);
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app{min-height:100vh;display:flex;flex-direction:column;}
+  a{color:var(--forest);}
+  button{font-family:var(--body);cursor:pointer;}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+
+  /* ---------- Top bar / pulse progress ---------- */
+  .topbar{
+    background:var(--forest-deep);
+    color:var(--paper-raised);
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  .brand{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:17px;
+    letter-spacing:0.2px;
+    white-space:nowrap;
+  }
+  .brand small{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:400;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#9FB3AB;
+    margin-top:2px;
+  }
+  .pulse-wrap{flex:1;min-width:0;}
+  .pulse-svg{width:100%;height:46px;display:block;}
+  .menu-btn{
+    display:none;
+    background:transparent;border:1px solid #3A544C;color:var(--paper-raised);
+    border-radius:8px;padding:8px 10px;font-size:13px;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{flex:1;display:flex;min-height:0;}
+  .sidebar{
+    width:290px;
+    flex-shrink:0;
+    background:var(--paper-raised);
+    border-right:1px solid var(--line);
+    padding:18px 0 40px;
+    overflow-y:auto;
+  }
+  .sidebar-mod{
+    padding:10px 20px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  .sidebar-mod-title{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    font-family:var(--display);
+    font-weight:600;
+    font-size:15px;
+    margin:6px 0 8px;
+  }
+  .mod-num{font-family:var(--mono);font-size:11px;color:var(--amber);}
+  .sidebar-unit{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:7px 8px;
+    border-radius:8px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    line-height:1.3;
+  }
+  .sidebar-unit:hover{background:var(--paper);}
+  .sidebar-unit.active{background:var(--forest);color:#fff;}
+  .sidebar-unit.locked{color:#A9B2AB;cursor:not-allowed;}
+  .sidebar-unit .dot{
+    width:8px;height:8px;border-radius:50%;flex-shrink:0;
+    background:var(--line);
+  }
+  .sidebar-unit.done .dot{background:var(--success);}
+  .sidebar-unit.active .dot{background:#fff;}
+  .sidebar-unit .lock{font-size:11px;opacity:0.7;}
+
+  .main{flex:1;min-width:0;overflow-y:auto;padding:36px 40px 90px;}
+  .main-inner{max-width:720px;margin:0 auto;}
+
+  /* ---------- Landing ---------- */
+  .landing{max-width:640px;margin:60px auto;padding:0 24px;}
+  .landing .eyebrow{
+    font-family:var(--mono);text-transform:uppercase;letter-spacing:2px;
+    font-size:11px;color:var(--amber);margin-bottom:14px;
+  }
+  .landing h1{
+    font-family:var(--display);font-size:40px;line-height:1.1;font-weight:600;
+    margin:0 0 18px;color:var(--forest-deep);
+  }
+  .landing p.lead{font-size:16px;line-height:1.65;color:var(--ink-soft);margin:0 0 28px;}
+  .overview-card{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:28px;
+  }
+  .overview-row{
+    display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .overview-row:last-child{border-bottom:none;}
+  .overview-row .n{font-family:var(--mono);color:var(--amber);font-size:13px;width:20px;flex-shrink:0;}
+  .overview-row .t{font-weight:600;font-size:14.5px;}
+  .overview-row .d{color:var(--ink-soft);font-size:13px;}
+  .name-field{margin-bottom:20px;}
+  .name-field label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;}
+  .name-field input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);
+    font-size:15px;font-family:var(--body);background:#fff;
+  }
+  .name-field input:focus{outline:2px solid var(--forest);outline-offset:1px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--forest);color:#fff;border:none;border-radius:10px;
+    padding:13px 22px;font-size:14.5px;font-weight:600;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .btn:hover{background:var(--forest-deep);}
+  .btn:active{transform:scale(0.98);}
+  .btn:focus-visible{outline:3px solid var(--amber-soft);outline-offset:2px;}
+  .btn.secondary{background:transparent;color:var(--forest);border:1.5px solid var(--forest);}
+  .btn.secondary:hover{background:var(--forest);color:#fff;}
+  .btn.amber{background:var(--amber);}
+  .btn.amber:hover{background:#8F4118;}
+  .btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .btn:disabled:hover{background:var(--forest);}
+
+  /* ---------- Unit content ---------- */
+  .unit-eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--amber);margin-bottom:10px;}
+  .unit-title{font-family:var(--display);font-size:30px;font-weight:600;color:var(--forest-deep);margin:0 0 22px;line-height:1.2;}
+  .block-p{font-size:15.5px;line-height:1.75;color:var(--ink);margin:0 0 16px;}
+  .block-h{font-family:var(--display);font-size:18px;font-weight:600;margin:26px 0 10px;color:var(--forest-deep);}
+  .block-ul{margin:0 0 18px;padding-left:0;list-style:none;}
+  .block-ul li{
+    position:relative;padding-left:22px;margin-bottom:9px;font-size:15px;line-height:1.6;color:var(--ink);
+  }
+  .block-ul li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;background:var(--amber);}
+  .block-ol{margin:0 0 18px;padding-left:22px;}
+  .block-ol li{margin-bottom:9px;font-size:15px;line-height:1.6;}
+  .callout{
+    background:var(--success-soft);border-left:4px solid var(--success);
+    border-radius:0 10px 10px 0;padding:16px 18px;margin:18px 0;font-size:14.5px;line-height:1.6;
+  }
+  .callout.warn{background:#F6E3D6;border-left-color:var(--amber);}
+  .callout .callout-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px;display:block;color:var(--forest-deep);}
+  .mnemonic{
+    display:flex;gap:14px;flex-wrap:wrap;margin:20px 0;
+  }
+  .mnemonic .letter{
+    background:var(--forest);color:#fff;border-radius:10px;padding:12px 16px;min-width:74px;text-align:center;
+  }
+  .mnemonic .letter .big{font-family:var(--display);font-size:26px;font-weight:600;display:block;}
+  .mnemonic .letter .small{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px;opacity:0.85;}
+  .unit-nav{display:flex;justify-content:space-between;margin-top:36px;padding-top:24px;border-top:1px solid var(--line);}
+
+  /* ---------- Quiz ---------- */
+  .quiz-header{margin-bottom:22px;}
+  .quiz-progress{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .q-card{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px 18px;margin-bottom:18px;
+  }
+  .q-card.answered-correct{border-color:var(--success);}
+  .q-card.answered-wrong{border-color:var(--pulse);}
+  .q-num{font-family:var(--mono);font-size:12px;color:var(--amber);margin-bottom:6px;}
+  .q-text{font-size:16px;font-weight:600;margin:0 0 14px;line-height:1.5;}
+  .opt{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;
+    border:1.5px solid var(--line);margin-bottom:8px;cursor:pointer;font-size:14.5px;background:#fff;
+  }
+  .opt:hover{border-color:var(--forest);}
+  .opt input{accent-color:var(--forest);width:16px;height:16px;flex-shrink:0;}
+  .opt.correct{border-color:var(--success);background:var(--success-soft);}
+  .opt.wrong{border-color:var(--pulse);background:#F8DEDA;}
+  .quiz-result{
+    text-align:center;padding:34px 24px;border-radius:var(--radius);margin-top:10px;
+  }
+  .quiz-result.pass{background:var(--success-soft);}
+  .quiz-result.fail{background:#F8DEDA;}
+  .quiz-result .score{font-family:var(--display);font-size:44px;font-weight:700;margin:0 0 6px;}
+  .quiz-result.pass .score{color:var(--success);}
+  .quiz-result.fail .score{color:var(--pulse);}
+  .quiz-result p{margin:4px 0 20px;color:var(--ink-soft);font-size:14.5px;}
+
+  /* ---------- Certificate ---------- */
+  .cert-screen{max-width:760px;margin:40px auto;padding:0 20px 60px;}
+  .cert-intro{text-align:center;margin-bottom:26px;}
+  .cert-intro h1{font-family:var(--display);font-size:30px;color:var(--forest-deep);margin:10px 0 8px;}
+  .cert-intro p{color:var(--ink-soft);font-size:14.5px;}
+  .certificate{
+    background:var(--paper-raised);
+    border:2px solid var(--forest);
+    border-radius:10px;
+    padding:48px 50px;
+    position:relative;
+    text-align:center;
+  }
+  .certificate::before{
+    content:"";position:absolute;inset:10px;border:1px solid var(--amber-soft);border-radius:6px;pointer-events:none;
+  }
+  .cert-eyebrow{font-family:var(--mono);letter-spacing:3px;text-transform:uppercase;font-size:11px;color:var(--amber);}
+  .cert-org{font-family:var(--display);font-weight:600;font-size:22px;color:var(--forest-deep);margin:10px 0 2px;}
+  .cert-org small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-soft);margin-top:2px;text-transform:none;}
+  .cert-divider{width:60px;height:2px;background:var(--pulse);margin:22px auto;}
+  .cert-of{font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);}
+  .cert-name{font-family:var(--display);font-size:38px;font-weight:600;color:var(--forest-deep);margin:12px 0;}
+  .cert-body{font-size:14.5px;color:var(--ink);line-height:1.7;max-width:480px;margin:0 auto 18px;}
+  .cert-meta{display:flex;justify-content:center;gap:40px;margin:24px 0 6px;flex-wrap:wrap;}
+  .cert-meta div{text-align:center;}
+  .cert-meta .label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);margin-bottom:4px;}
+  .cert-meta .val{font-weight:600;font-size:14px;}
+  .cert-disclaimer{
+    margin-top:26px;padding-top:18px;border-top:1px dashed var(--line);
+    font-size:11px;color:var(--ink-soft);line-height:1.6;
+  }
+  .cert-actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
+
+  @media print{
+    .topbar,.sidebar,.cert-actions,.cert-intro,.admin-link{display:none !important;}
+    .layout,.main{display:block !important;padding:0;}
+    body{background:#fff;}
+    .cert-screen{margin:0;max-width:none;}
+    .certificate{border-width:3px;}
+  }
+
+  /* ---------- Admin corner link ---------- */
+  .admin-link{
+    position:fixed;bottom:14px;right:16px;z-index:30;
+    font-family:var(--mono);font-size:11px;color:#8FA098;
+    background:var(--paper-raised);border:1px solid var(--line);
+    padding:6px 10px;border-radius:20px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+  }
+  .admin-link:hover{color:var(--forest);border-color:var(--forest);}
+
+  /* ---------- Admin login ---------- */
+  .admin-login{max-width:380px;margin:80px auto;padding:0 20px;text-align:center;}
+  .admin-login h1{font-family:var(--display);font-size:24px;color:var(--forest-deep);margin:0 0 6px;}
+  .admin-login p{color:var(--ink-soft);font-size:13.5px;margin:0 0 20px;}
+  .admin-login input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);
+    font-size:15px;text-align:center;margin-bottom:12px;font-family:var(--mono);
+  }
+  .admin-login .err{color:var(--pulse);font-size:13px;margin-bottom:10px;min-height:18px;}
+
+  /* ---------- Admin roster ---------- */
+  .admin-screen{max-width:920px;margin:0 auto;padding:34px 20px 80px;}
+  .admin-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
+  .admin-head h1{font-family:var(--display);font-size:26px;color:var(--forest-deep);margin:0 0 4px;}
+  .admin-head p{color:var(--ink-soft);font-size:13px;margin:0;}
+  .admin-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .admin-toolbar input[type="text"]{
+    flex:1;min-width:180px;padding:10px 14px;border-radius:9px;border:1.5px solid var(--line);font-size:14px;
+  }
+  .admin-table-wrap{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  }
+  table.admin-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.admin-table th{
+    text-align:left;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;
+    color:var(--ink-soft);background:var(--paper);padding:12px 16px;border-bottom:1px solid var(--line);
+  }
+  table.admin-table td{padding:12px 16px;border-bottom:1px solid var(--line);}
+  table.admin-table tr:last-child td{border-bottom:none;}
+  table.admin-table tr:hover td{background:var(--paper);}
+  .admin-empty{padding:40px 20px;text-align:center;color:var(--ink-soft);font-size:14px;}
+  .admin-setup{
+    background:#F6E3D6;border:1px solid var(--amber-soft);border-radius:var(--radius);
+    padding:20px 22px;font-size:13.5px;line-height:1.7;margin-bottom:20px;
+  }
+  .admin-setup code{
+    background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:5px;font-family:var(--mono);font-size:12.5px;
+  }
+  .admin-status{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+
+  @media (max-width: 860px){
+    .sidebar{
+      position:fixed;left:0;top:74px;bottom:0;transform:translateX(-100%);
+      transition:transform .2s ease;box-shadow:8px 0 24px rgba(0,0,0,0.15);z-index:15;
+    }
+    .sidebar.open{transform:translateX(0);}
+    .menu-btn{display:inline-block;}
+    .main{padding:26px 18px 80px;}
+    .landing{margin:34px auto;}
+    .landing h1{font-size:30px;}
+    .certificate{padding:30px 20px;}
+    .cert-name{font-size:28px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================================
+   CONFIG — edit these to match your organization
+========================================================================= */
+const CONFIG = {
+  orgName: "Caring Hearts of Utah",
+  orgSub: "Non-medical live-in home care",
+  courseTitle: "Basic First Aid Awareness Course",
+  courseSubtitle: "An internal training course for Caring Hearts of Utah caregivers",
+  passPercent: 80,
+  issuerLine: "Issued by Caring Hearts of Utah for internal training purposes",
+  disclaimer: "This certificate confirms completion of Caring Hearts of Utah's internal Basic First Aid Awareness Course. It is not issued or endorsed by the American Heart Association, the American Red Cross, or any accredited certifying body, and it is not a substitute for a nationally accredited first aid, CPR, or AED certification. It does not qualify the holder to perform clinical procedures. This course is intended to build general first aid awareness for non-medical caregiving staff.",
+
+  // ---- Certificate roster (admin) settings ----
+  // Paste the Google Apps Script "Web app" URL here after deploying it (see SETUP.md).
+  // Until this is set, certificates only save to the issuing device and the admin
+  // roster will show setup instructions instead of a list.
+  apiUrl: "",
+  // Simple client-side gate for the admin roster. NOT real security — anyone who
+  // views this page's source can read it. Fine for a low-stakes internal list,
+  // not for anything sensitive. Change it to whatever you like.
+  adminPassword: "password123"
+};
+
+/* =========================================================================
+   CONTENT — 4 modules, each with units and a quiz
+========================================================================= */
+const MODULES = [
+{
+  id:"m1", title:"Foundations of First Aid",
+  units:[
+    { title:"Why First Aid Matters", blocks:[
+      {t:"p", v:"Welcome to your first module. Before we get into technique, it helps to understand why this training exists at all."},
+      {t:"p", v:"Sudden medical emergencies are far more common than most people realize. Heart attacks alone affect hundreds of thousands of people in the U.S. every year, and cardiac arrest — where the heart stops entirely — remains one of the leading causes of death nationwide. Many bystanders freeze in these moments simply because they were never shown what to do."},
+      {t:"p", v:"The first few minutes of an emergency are the ones that matter most. Long before paramedics arrive, a calm, prepared person on the scene can control bleeding, keep an airway open, or start compressions that keep blood moving to the brain. That person is often a caregiver, a family member, or a coworker — not a medical professional."},
+      {t:"callout", label:"Why this matters for you", v:"As a Caring Hearts of Utah caregiver, you spend more one-on-one time with clients than almost anyone else in their care team. That makes you the most likely person to be present if something goes wrong — and the most valuable person to have trained."}
+    ]},
+    { title:"The Three Goals of First Aid", blocks:[
+      {t:"p", v:"Every first aid action you take, no matter the situation, serves one of three purposes. A simple way to hold onto this is the phrase 'the three P's.'"},
+      {t:"mnemonic", items:[
+        {big:"P", small:"Preserve life"},
+        {big:"P", small:"Prevent worsening"},
+        {big:"P", small:"Promote recovery"}
+      ]},
+      {t:"h", v:"Preserve life"},
+      {t:"p", v:"This is always the top priority — keeping the person alive through actions like opening an airway or performing CPR. It also includes preserving your own life: never put yourself in danger to help someone else. Before doing anything, quickly check the scene for hazards."},
+      {t:"h", v:"Prevent the situation from getting worse"},
+      {t:"p", v:"Once the person is stable, your job is to stop things from deteriorating further. Keeping someone with a suspected fracture still, or removing a hazard from the area, both fall under this goal."},
+      {t:"h", v:"Promote recovery"},
+      {t:"p", v:"Finally, good first aid supports long-term healing — getting professional help on the way quickly, and taking simple steps (like cooling a burn right away) that reduce lasting damage."}
+    ]},
+    { title:"Taking Charge of a Scene", blocks:[
+      {t:"p", v:"If you're the first person to reach someone who's hurt or unwell, you're effectively managing that scene until help arrives — even if only for a minute or two."},
+      {t:"callout", v:"You matter more than anyone else at the scene. If a situation is too dangerous to approach safely — traffic, fire, electricity, an unstable structure — stay back and call for professional help instead. You cannot help anyone if you become a second casualty."},
+      {t:"h", v:"Your first moves"},
+      {t:"ol", items:[
+        "Scan for anything that could hurt you or bystanders.",
+        "If it's safe to do so, remove or reduce the hazard.",
+        "Keep checking that the area stays safe as you work."
+      ]},
+      {t:"h", v:"Calling for emergency help"},
+      {t:"p", v:"In the United States, dial 911. Know your local emergency number if you're working in an area that may differ, and be ready to give the dispatcher clear information:"},
+      {t:"ul", items:[
+        "Exact location of the emergency",
+        "How many people are involved and their approximate age",
+        "What's wrong with them, in plain terms",
+        "Any hazards on scene (fire, spilled fluids, live electricity, etc.)"
+      ]},
+      {t:"p", v:"If you're somewhere hard to find, it can help to send someone to flag down responders at a nearby landmark."}
+    ]},
+    { title:"Protecting Yourself and Your Client from Infection", blocks:[
+      {t:"p", v:"Good infection control protects two people at once: you, and the person you're caring for. Blood and other body fluids can carry infections such as hepatitis and HIV, so a few simple habits go a long way."},
+      {t:"h", v:"Hand hygiene"},
+      {t:"p", v:"Wash your hands with soap and running water whenever you can, cover any cuts on your own hands with a waterproof dressing first, and keep nails trimmed. Alcohol-based hand gel is a reasonable backup, but it doesn't work on visibly dirty hands and won't kill every type of germ."},
+      {t:"h", v:"Protective barriers"},
+      {t:"p", v:"Disposable gloves should go on any time you might contact blood or body fluids. If gloves aren't available, improvise a barrier with whatever's on hand — even a clean plastic bag can help in a pinch. Masks, aprons, and eye protection serve the same purpose: keeping fluids off your skin and clothing."},
+      {t:"h", v:"Handling contaminated materials"},
+      {t:"p", v:"Anything soiled with blood or body fluids — a used dressing, for example — is clinical waste and shouldn't go in with regular trash. Bag it separately and let EMS know it's there when they arrive so it's disposed of properly. Needles or other sharp items belong in a dedicated sharps container, never loose in the trash."}
+    ]}
+  ],
+  quiz:[
+    {q:"When you arrive at the scene of an emergency, whose safety should you consider first?", type:"mc", options:["The injured person","Bystanders","Yourself","The emergency dispatcher"], correct:2},
+    {q:"Which of these is NOT one of the three core goals of first aid?", type:"mc", options:["Preserve life","Bandage every wound you see","Prevent the condition from worsening","Promote recovery"], correct:1},
+    {q:"In the United States, what number should you call for emergency medical help?", type:"mc", options:["112","999","911","411"], correct:2},
+    {q:"You must complete a formal certification course before you're allowed to give someone first aid in an emergency.", type:"tf", correct:false},
+    {q:"You arrive at the scene of a car crash. What should you do first?", type:"mc", options:["Rush to check on the people inside","Call the tow company","Start treating any visible wounds","Scan the scene for hazards to yourself"], correct:3},
+    {q:"You should put on gloves before approaching an injured person whenever it's practical to do so.", type:"tf", correct:true}
+  ]
+},
+{
+  id:"m2", title:"Responding to an Unconscious Person",
+  units:[
+    { title:"The Primary Check: D-R-A-B", blocks:[
+      {t:"p", v:"When you come across someone who's collapsed, you need a quick, reliable way to work out what's wrong and what to do next. The sequence below — D-R-A-B — gives you that structure."},
+      {t:"mnemonic", items:[
+        {big:"D", small:"Danger"},
+        {big:"R", small:"Response"},
+        {big:"A", small:"Airway"},
+        {big:"B", small:"Breathing"}
+      ]},
+      {t:"h", v:"Danger"},
+      {t:"p", v:"Check the area around both of you for hazards, just as you learned in Module 1. If it's not safe to approach, stay back and call for help instead."},
+      {t:"h", v:"Response"},
+      {t:"p", v:"Try to wake the person: speak loudly, and gently shake their shoulders. If they don't respond, they're unconscious — a complete or near-complete lack of awareness of themselves and their surroundings. This is different from being asleep, because an unconscious person will not wake up."},
+      {t:"callout", label:"Why this is dangerous", v:"When someone loses consciousness, their muscles go limp, including the tongue. A relaxed tongue can slide back and block the airway, and relaxed stomach muscles can let vomit travel back up the throat — both of which can suffocate the person if not managed quickly."},
+      {t:"h", v:"Airway"},
+      {t:"p", v:"Open the airway by tilting the head back and lifting the chin gently with two fingers. This lifts the tongue away from the back of the throat."},
+      {t:"h", v:"Breathing"},
+      {t:"p", v:"Keeping the airway open, put your cheek close to their mouth and watch their chest. Look, listen, and feel for normal breathing for up to 10 seconds. Occasional gasping or snoring sounds don't count as normal breathing — treat them as if the person isn't breathing at all."}
+    ]},
+    { title:"The Recovery Position", blocks:[
+      {t:"p", v:"If someone is unconscious but breathing normally, roll them into the recovery position. This keeps the tongue clear of the airway and lets fluids drain from the mouth instead of pooling in the throat."},
+      {t:"h", v:"How to do it"},
+      {t:"ol", items:[
+        "Kneel beside them at waist level.",
+        "Position the arm nearest you out at a right angle, as if waving.",
+        "Bring their far hand across and rest the back of it against the cheek closest to you.",
+        "Bend the far leg at the knee and plant that foot flat on the ground.",
+        "Using the bent knee as a lever, roll the person toward you onto their side.",
+        "Recheck that the head is tilted back and the airway stays open."
+      ]},
+      {t:"p", v:"Once they're positioned, call 911 if you haven't already, and keep rechecking their breathing regularly until help arrives."},
+      {t:"h", v:"If you suspect a back or neck injury"},
+      {t:"p", v:"Moving someone with a possible spinal injury carries risk, but a blocked airway is a bigger, more immediate threat. If their airway is clear and there's no vomiting, keep them as still as possible and wait for EMS. If you can't keep the airway open any other way, carefully roll them into the recovery position — with a second person supporting the head if one's available."}
+    ]},
+    { title:"CPR: What It Is and Why It Works", blocks:[
+      {t:"p", v:"If someone isn't breathing normally, call 911 immediately and begin CPR without delay."},
+      {t:"p", v:"Every cell in the body depends on a steady supply of oxygen, carried by the blood your heart pumps. A cardiac arrest is when the heart stops pumping altogether — different from a heart attack, though a heart attack can trigger one. Causes include abnormal heart rhythms, drug reactions, heart disease, severe blood loss, severe allergic reactions, and airway blockages like choking."},
+      {t:"p", v:"When circulation stops, oxygen stops reaching the brain. Brain cells begin dying after roughly 4–5 minutes without oxygen, which is why acting fast matters so much."},
+      {t:"callout", v:"CPR doesn't restart the heart on its own — a defibrillator does that. What CPR does is keep enough oxygenated blood moving to protect the brain and other organs until a defibrillator or paramedics arrive."}
+    ]},
+    { title:"The Chain of Survival", blocks:[
+      {t:"p", v:"Survival from cardiac arrest depends on a sequence of actions happening quickly, one after another — often called the chain of survival."},
+      {t:"ol", items:[
+        "Early recognition and calling for help — spotting the emergency and getting EMS moving right away.",
+        "Early CPR — starting compressions immediately and keeping them going with as few interruptions as possible.",
+        "Early defibrillation — using an AED as soon as one is available to try to correct the heart's rhythm.",
+        "Post-resuscitation care — the hospital-based treatment that follows, which strongly affects long-term outcomes."
+      ]},
+      {t:"p", v:"Every link matters, but the two you're most likely to control directly are the first two: recognizing the emergency and starting CPR without hesitation."}
+    ]},
+    { title:"Performing Adult CPR", blocks:[
+      {t:"p", v:"Start CPR as soon as you've confirmed the person isn't breathing normally and EMS is on the way. You don't need to check for a pulse — that costs valuable time. If an AED is nearby, send someone for it immediately."},
+      {t:"callout", label:"Untrained rescuers", v:"If you haven't been trained in rescue breaths, hands-only CPR — chest compressions alone, without stopping — is the recommended approach and is highly effective."},
+      {t:"h", v:"Giving chest compressions"},
+      {t:"ol", items:[
+        "Kneel beside the person.",
+        "Place the heel of one hand in the center of the chest.",
+        "Stack your other hand on top and interlock your fingers, keeping pressure off the ribs and the very bottom of the breastbone.",
+        "Position your shoulders directly over your hands with your arms straight.",
+        "Push straight down about 2 inches (5–6 cm), then let the chest fully rise before the next push.",
+        "Aim for a steady rate of 100–120 compressions per minute."
+      ]},
+      {t:"p", v:"If you've been trained to give rescue breaths, give two after every 30 compressions: tilt the head back, seal your mouth over theirs, and blow in for about one second — just enough to see the chest rise. Otherwise, keep going with compressions alone."},
+      {t:"h", v:"When to stop"},
+      {t:"ul", items:[
+        "The person starts showing signs of life — coughing, moving, breathing normally.",
+        "A paramedic or other trained responder takes over and tells you to stop.",
+        "You're physically too exhausted to continue.",
+        "The scene suddenly becomes unsafe."
+      ]},
+      {t:"p", v:"If another capable person is present, switch every couple of minutes — compressions lose effectiveness as the rescuer tires."}
+    ]},
+    { title:"Common CPR Mistakes to Avoid", blocks:[
+      {t:"h", v:"Pushing too shallow"},
+      {t:"p", v:"Compressions need real depth — about 2 inches — to move blood effectively. People often hold back out of fear of hurting the person, but cracked ribs are a known, acceptable trade-off for effective CPR. Don't let that concern slow you down."},
+      {t:"h", v:"Going too slow or too fast"},
+      {t:"p", v:"Stay in the 100–120 compressions-per-minute range. Too slow moves too little blood; too fast often doesn't allow full depth."},
+      {t:"h", v:"Leaning on the chest between compressions"},
+      {t:"p", v:"Let the chest fully rise after every push. Leaning on it — common as rescuers tire — stops the heart from refilling with blood between compressions."},
+      {t:"h", v:"Blowing too hard during rescue breaths"},
+      {t:"p", v:"A rescue breath should last about one second, just enough to see the chest rise. Blowing too forcefully pushes air into the stomach instead of the lungs, increasing the risk of vomiting."}
+    ]}
+  ],
+  quiz:[
+    {q:"How is 'unconscious' best defined?", type:"mc", options:["Sleeping deeply","Feeling drowsy","Not waking up and unaware of self or surroundings","Having a headache"], correct:2},
+    {q:"What's the very first step when you find someone collapsed?", type:"mc", options:["Check for danger","Try to wake them","Check their breathing","Check their pulse"], correct:0},
+    {q:"What does the D-R-A-B sequence stand for?", type:"mc", options:["Danger, Recognition, Airway, Breathing","Danger, Response, Airway, Breathing","Danger, Response, Airway, Bandaging","Danger, Rescue, Airway, Bleeding"], correct:1},
+    {q:"How do you open the airway of an unconscious person?", type:"mc", options:["Leave them exactly as found","Turn only the head to one side","Tilt the head back and lift the chin","Lift the chin without tilting the head"], correct:2},
+    {q:"What does CPR stand for?", type:"mc", options:["Cardiopulmonary Resuscitation","Cardiac Pulse Recovery","Compression-Pulse Response","Circulatory Pressure Restoration"], correct:0},
+    {q:"For an adult, how many chest compressions are given before a pair of rescue breaths (if you're trained to give them)?", type:"mc", options:["10","15","30","50"], correct:2}
+  ]
+},
+{
+  id:"m3", title:"Bleeding, Wounds & Shock",
+  units:[
+    { title:"How Blood Moves Through the Body", blocks:[
+      {t:"p", v:"Before treating a wound, it helps to know a little about what's actually bleeding. The heart pumps blood through three types of vessels, and each bleeds a little differently."},
+      {t:"ul", items:[
+        "Arteries carry blood away from the heart under high pressure — a cut artery often spurts blood in time with the heartbeat.",
+        "Veins carry blood back toward the heart under low pressure — bleeding tends to flow steadily rather than spurt.",
+        "Capillaries are tiny vessels feeding individual tissues — damage here causes gentle oozing."
+      ]},
+      {t:"p", v:"An average adult carries around 5 liters of blood — worth keeping in mind, since losing a large share of it quickly is what makes major bleeding so dangerous."},
+      {t:"h", v:"Types of wounds you may see"},
+      {t:"ul", items:[
+        "Laceration — a tear in the skin and underlying tissue.",
+        "Contusion — a bruise, with bleeding under intact skin.",
+        "Abrasion — a scrape that removes the top layer of skin.",
+        "Incision — a clean, straight cut.",
+        "Puncture — caused by something sharp, which may still be lodged in the wound."
+      ]}
+    ]},
+    { title:"Controlling Major Bleeding", blocks:[
+      {t:"p", v:"Heavy bleeding is a medical emergency. Left uncontrolled, it can quickly progress to shock. Call 911 right away and work to control the bleeding while help is on the way."},
+      {t:"p", v:"A simple mnemonic for major bleeding is PEEP:"},
+      {t:"mnemonic", items:[
+        {big:"P", small:"Position"},
+        {big:"E", small:"Elevate"},
+        {big:"E", small:"Expose"},
+        {big:"P", small:"Pressure"}
+      ]},
+      {t:"ul", items:[
+        "Position the person somewhere safe and as comfortable as possible.",
+        "Elevate the injured limb above the level of the heart if you can.",
+        "Expose the wound so you can see exactly what you're dealing with, including any embedded objects.",
+        "Apply firm, direct pressure over the wound — or around an embedded object, never on top of it."
+      ]},
+      {t:"callout", label:"What not to do", v:"Don't apply a tourniquet unless you've been specifically trained to use one. Don't try to rinse out a major wound — your only goal right now is stopping the bleeding. Watch closely for signs of shock, covered in the next unit."},
+      {t:"p", v:"If you have a clean, sterile dressing available, applying it adds direct pressure while also reducing infection risk."}
+    ]},
+    { title:"Puncture Wounds", blocks:[
+      {t:"p", v:"A puncture wound happens when something sharp — glass, a nail, a splinter, a knife — pierces the skin. The object may still be lodged in the wound, or it may have passed all the way through."},
+      {t:"callout", label:"Golden rule", v:"Never remove an embedded object unless it's very small, like a tiny splinter. Removing it can trigger serious new bleeding and cause further tissue damage."},
+      {t:"ul", items:[
+        "Control bleeding with pressure applied around the object, not on it.",
+        "Elevate the affected limb if possible.",
+        "Get the person urgent medical attention.",
+        "Keep the object as still as possible until professionals can remove it safely."
+      ]}
+    ]},
+    { title:"Recognizing and Treating Shock", blocks:[
+      {t:"p", v:"Medical shock happens when the body's tissues stop getting enough oxygen and nutrients — most often because significant blood has been lost. It's a life-threatening emergency, and it's a completely different thing from 'being shocked' emotionally by a scary event."},
+      {t:"p", v:"When someone loses a large volume of blood, there simply isn't enough left to carry oxygen to vital organs. This particular type — caused by blood loss — is called hypovolemic shock."},
+      {t:"h", v:"Signs to watch for"},
+      {t:"ul", items:[
+        "Pale, cool, clammy skin",
+        "Confusion or disorientation",
+        "Increasing drowsiness",
+        "A fast, weak pulse",
+        "Fast, shallow breathing"
+      ]},
+      {t:"h", v:"What to do"},
+      {t:"ol", items:[
+        "Control any external bleeding using the PEEP approach.",
+        "Lay the person down and raise their legs if it's safe to do so.",
+        "Keep them warm with a coat or blanket.",
+        "Call 911 if you haven't already."
+      ]},
+      {t:"callout", v:"Never give a person in shock anything to eat or drink. Stay with them, and if they lose consciousness, move them into the recovery position; if they stop breathing normally, begin CPR."}
+    ]},
+    { title:"Minor Wounds and Watching for Infection", blocks:[
+      {t:"p", v:"Most cuts and scrapes are minor and heal on their own with basic care."},
+      {t:"ol", items:[
+        "Wash your hands and put on gloves if you have them.",
+        "Clean the wound with an antiseptic wipe or clean running water.",
+        "Cover it with a clean dressing, such as an adhesive bandage."
+      ]},
+      {t:"callout", label:"Caution", v:"Don't remove any object embedded in the wound, such as a shard of glass — get medical advice instead."},
+      {t:"h", v:"Signs a wound may be infected"},
+      {t:"ul", items:[
+        "Pain that's increasing rather than settling",
+        "Redness, swelling, or warmth around the wound",
+        "Discharge or pus coming from the wound",
+        "A fever developing in the person"
+      ]},
+      {t:"p", v:"If you notice any of these signs, encourage the person to seek medical attention promptly."}
+    ]}
+  ],
+  quiz:[
+    {q:"Roughly how much blood does the average adult have?", type:"mc", options:["5 liters","2 liters","8 liters","12 liters"], correct:0},
+    {q:"What is a contusion?", type:"mc", options:["A large open wound","A tear in the skin","A minor head injury","A bruise"], correct:3},
+    {q:"Raising an injured limb above the level of the heart can help slow bleeding.", type:"tf", correct:true},
+    {q:"You should pull an embedded object out of a wound to help stop the bleeding.", type:"tf", correct:false},
+    {q:"Firm, direct pressure is generally the most effective first response to major external bleeding.", type:"tf", correct:true},
+    {q:"Which type of blood vessel is most likely to cause blood to spurt from a wound?", type:"mc", options:["Capillary","Vein","Artery","Lymph vessel"], correct:2}
+  ]
+},
+{
+  id:"m4", title:"Burns",
+  units:[
+    { title:"Understanding Burns", blocks:[
+      {t:"p", v:"Burns are classified two ways: by what caused them, and by how deep the damage goes. Depth matters most for deciding how serious a burn is."},
+      {t:"h", v:"Common causes"},
+      {t:"ul", items:[
+        "Scald — hot liquid or steam",
+        "Friction — rough surfaces, like carpet burn",
+        "Radiation — including sunburn",
+        "Electrical — leaves both an entry and an exit burn",
+        "Chemical — household or industrial substances",
+        "Dry/contact — touching a hot object directly"
+      ]},
+      {t:"h", v:"Depth of injury"},
+      {t:"ul", items:[
+        "Superficial (1st degree) — only the outer layer of skin is affected, usually just redness. Mild sunburn is a common example.",
+        "Partial thickness (2nd degree) — deeper damage causes blistering as fluid collects under the skin.",
+        "Full thickness (3rd degree) — the most severe; every layer of skin is affected, sometimes reaching muscle, fat, or bone underneath."
+      ]},
+      {t:"h", v:"Estimating burn size"},
+      {t:"p", v:"Burn size is measured as a percentage of total body surface area. One quick trick: the person's own palm represents roughly 1% of their body surface. A burn covering around 10% or more of the body is considered serious and can lead to shock."}
+    ]},
+    { title:"Treating a Minor Burn", blocks:[
+      {t:"p", v:"Everyday burns — from a hot pan, a curling iron, a kettle — are among the most common household injuries. The core response is the same in almost every case: cool it fast, cover it well."},
+      {t:"h", v:"Step by step"},
+      {t:"ol", items:[
+        "Run cool water over the burn for at least 10 minutes. If running water isn't available, any safe, non-toxic cold liquid will do in a pinch.",
+        "Gently remove anything tight near the area — rings, watches, bracelets — before swelling sets in. Leave clothing that's stuck to the burn in place and cool it through the fabric.",
+        "Once cooled, cover the area with a clean, non-fluffy dressing. If a sterile dressing isn't on hand, improvise with plastic wrap or a clean cloth, wrapped loosely.",
+        "Seek medical care for anything beyond a very minor burn, and call 911 for any burn near the face, neck, or airway, or any large or deep burn."
+      ]},
+      {t:"callout", label:"What not to do", v:"Don't apply butter, toothpaste, or creams — cool running water works far better. Don't pop any blisters that form. Don't stop cooling before the full 10 minutes is up. Aloe/aftersun lotion is fine for ordinary sunburn."},
+      {t:"h", v:"Chemical burns"},
+      {t:"p", v:"Chemical burns need extra caution because the substance keeps damaging tissue until it's fully removed."},
+      {t:"ol", items:[
+        "Check for danger to yourself first — the chemical that hurt them can hurt you too. Ventilate the area if you're indoors, and put on gloves.",
+        "Flush the burn with large amounts of running water for 15–20 minutes, taking care not to let the runoff touch your own skin.",
+        "Remove any clothing that's contaminated, unless it's stuck to the burn. Try to identify the chemical and keep its container if possible.",
+        "Cover with a sterile, non-fluffy dressing — or improvise with plastic wrap."
+      ]},
+      {t:"p", v:"Call 911 for a serious chemical burn, or if the person shows signs of shock or a dropping level of consciousness. Notify fire and police as well if there's been a larger spill. If you're exposed to the chemical yourself, get medical advice right away."}
+    ]}
+  ],
+  quiz:[
+    {q:"At minimum, how many minutes should you cool a typical burn under running water?", type:"mc", options:["2 minutes","5 minutes","10 minutes","25 minutes"], correct:2},
+    {q:"Why should you cover a burn after cooling it?", type:"mc", options:["To stop it from bleeding","To reduce the risk of infection","To reduce swelling","To numb the pain"], correct:1},
+    {q:"Plastic wrap (cling film) is a reasonable improvised covering for a burn if no sterile dressing is available.", type:"tf", correct:true},
+    {q:"A large burn can cause a person to go into shock.", type:"tf", correct:true},
+    {q:"Sunburn is a type of which burn category?", type:"mc", options:["Chemical burn","Friction burn","Radiation burn","Dry/contact burn"], correct:2},
+    {q:"You should pop any blisters caused by a burn to help it heal faster.", type:"tf", correct:false}
+  ]
+}
+];
+
+/* =========================================================================
+   STATE
+========================================================================= */
+const STORAGE_KEY = "chu_first_aid_progress_v1";
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){ /* storage unavailable — fall back to in-memory */ }
+  return null;
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e){ /* ignore — session will still work in-memory */ }
+}
+
+let state = loadState() || {
+  name:"",
+  started:false,
+  view:"landing",           // landing | unit | quiz | certificate
+  moduleIndex:0,
+  unitIndex:0,
+  completedUnits:{},        // "m0-u0": true
+  quizPassed:{},            // "m0": true
+  quizScores:{},            // "m0": {score, total}
+  certId:null,
+  completedDate:null,
+  certSynced:false
+};
+
+/* Admin session — intentionally NOT persisted to localStorage or saved in `state`,
+   so the password prompt reappears every visit. */
+let adminAuthed = false;
+let adminError = "";
+let adminRoster = null;      // fetched list, or null if not yet loaded
+let adminLoading = false;
+let adminLoadError = "";
+let adminSearch = "";
+let preAdminView = null;     // the caregiver-side view to return to after leaving admin
+
+function key(mi,ui){ return "m"+mi+"-u"+ui; }
+
+function isModuleUnlocked(mi){
+  if(mi===0) return true;
+  return !!state.quizPassed["m"+(mi-1)];
+}
+function isUnitUnlocked(mi,ui){
+  if(!isModuleUnlocked(mi)) return false;
+  if(ui===0) return true;
+  return !!state.completedUnits[key(mi,ui-1)];
+}
+function isQuizUnlocked(mi){
+  if(!isModuleUnlocked(mi)) return false;
+  const mod = MODULES[mi];
+  return mod.units.every((_,ui)=> !!state.completedUnits[key(mi,ui)]);
+}
+function courseComplete(){
+  return MODULES.every((_,mi)=> !!state.quizPassed["m"+mi]);
+}
+
+/* =========================================================================
+   RENDER HELPERS
+========================================================================= */
+const app = document.getElementById("app");
+let sidebarOpen = false;
+
+function el(tag, attrs={}, children=[]){
+  const e = document.createElement(tag);
+  for(const k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null) return;
+    e.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+  });
+  return e;
+}
+
+function renderBlocks(blocks){
+  const frag = document.createDocumentFragment();
+  blocks.forEach(b=>{
+    if(b.t==="p") frag.appendChild(el("p",{class:"block-p"},b.v));
+    else if(b.t==="h") frag.appendChild(el("h3",{class:"block-h"},b.v));
+    else if(b.t==="ul") frag.appendChild(el("ul",{class:"block-ul"}, b.items.map(i=>el("li",{},i))));
+    else if(b.t==="ol") frag.appendChild(el("ol",{class:"block-ol"}, b.items.map(i=>el("li",{},i))));
+    else if(b.t==="callout") frag.appendChild(el("div",{class:"callout"+(b.warn?" warn":"")},[
+      b.label?el("span",{class:"callout-label"},b.label):null,
+      document.createTextNode(b.v)
+    ]));
+    else if(b.t==="mnemonic") frag.appendChild(el("div",{class:"mnemonic"}, b.items.map(i=>
+      el("div",{class:"letter"},[el("span",{class:"big"},i.big),el("span",{class:"small"},i.small)])
+    )));
+  });
+  return frag;
+}
+
+/* ---- pulse line progress svg (signature element) ---- */
+function pulseSvg(){
+  const totalModules = MODULES.length;
+  const w = 1000, h = 46, midY = h/2;
+  const segW = w/totalModules;
+  let path = `M0,${midY}`;
+  let markers = [];
+  for(let i=0;i<totalModules;i++){
+    const x0 = i*segW, x1 = (i+1)*segW;
+    const passed = !!state.quizPassed["m"+i];
+    const isCurrent = state.started && i===state.moduleIndex && !passed;
+    const spikeX = x0 + segW*0.5;
+    path += ` L${spikeX-18},${midY}`;
+    if(passed || isCurrent){
+      path += ` L${spikeX-9},${midY-14} L${spikeX-2},${midY+16} L${spikeX+6},${midY-20} L${spikeX+13},${midY}`;
+    } else {
+      path += ` L${spikeX+13},${midY}`;
+    }
+    path += ` L${x1},${midY}`;
+    markers.push({x:spikeX, passed, isCurrent, label:i+1});
+  }
+  const circles = markers.map(m=>{
+    const fill = m.passed ? "var(--success)" : (m.isCurrent ? "var(--amber)" : "#5C7168");
+    return `<circle cx="${m.x}" cy="${midY}" r="5" fill="${fill}" stroke="var(--forest-deep)" stroke-width="2"/>`;
+  }).join("");
+  return `<svg class="pulse-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Course progress: module ${state.moduleIndex+1} of ${totalModules}">
+    <path d="${path}" fill="none" stroke="var(--pulse)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${circles}
+  </svg>`;
+}
+
+function topBar(){
+  const bar = el("div",{class:"topbar"},[
+    el("button",{class:"menu-btn","aria-label":"Toggle module menu", onclick:()=>{sidebarOpen=!sidebarOpen; render();}}, "☰ Modules"),
+    el("div",{class:"brand"},[document.createTextNode(CONFIG.orgName), el("small",{},CONFIG.courseTitle)]),
+    el("div",{class:"pulse-wrap", html:pulseSvg()})
+  ]);
+  return bar;
+}
+
+function sidebar(){
+  const side = el("div",{class:"sidebar"+(sidebarOpen?" open":"")});
+  MODULES.forEach((mod,mi)=>{
+    const unlocked = isModuleUnlocked(mi);
+    const modBlock = el("div",{class:"sidebar-mod"});
+    modBlock.appendChild(el("div",{class:"sidebar-mod-title"},[
+      el("span",{class:"mod-num"},"MOD "+(mi+1)),
+      document.createTextNode(mod.title)
+    ]));
+    mod.units.forEach((u,ui)=>{
+      const uUnlocked = isUnitUnlocked(mi,ui);
+      const done = !!state.completedUnits[key(mi,ui)];
+      const active = state.started && state.view==="unit" && state.moduleIndex===mi && state.unitIndex===ui;
+      const row = el("div",{
+        class:"sidebar-unit"+(active?" active":"")+(done?" done":"")+(uUnlocked?"":" locked"),
+        onclick: uUnlocked ? ()=>{ state.moduleIndex=mi; state.unitIndex=ui; state.view="unit"; sidebarOpen=false; saveState(); render(); } : null
+      },[
+        el("span",{class:"dot"}),
+        el("span",{},u.title),
+        uUnlocked?null:el("span",{class:"lock"},"🔒")
+      ]);
+      modBlock.appendChild(row);
+    });
+    const quizUnlocked = isQuizUnlocked(mi);
+    const quizPassed = !!state.quizPassed["m"+mi];
+    const quizActive = state.started && state.view==="quiz" && state.moduleIndex===mi;
+    modBlock.appendChild(el("div",{
+      class:"sidebar-unit"+(quizActive?" active":"")+(quizPassed?" done":"")+(quizUnlocked?"":" locked"),
+      style:"margin-top:2px;font-weight:600;",
+      onclick: quizUnlocked ? ()=>{ state.moduleIndex=mi; state.view="quiz"; sidebarOpen=false; saveState(); render(); } : null
+    },[
+      el("span",{class:"dot"}),
+      el("span",{}, "Module "+(mi+1)+" Quiz"),
+      quizUnlocked?null:el("span",{class:"lock"},"🔒")
+    ]));
+    side.appendChild(modBlock);
+  });
+  const certUnlocked = courseComplete();
+  const certRow = el("div",{class:"sidebar-mod"},[
+    el("div",{
+      class:"sidebar-unit"+(state.view==="certificate"?" active":"")+(certUnlocked?" done":" locked"),
+      style:"font-weight:600;",
+      onclick: certUnlocked ? ()=>{ state.view="certificate"; sidebarOpen=false; saveState(); render(); } : null
+    },[
+      el("span",{class:"dot"}),
+      el("span",{},"Your Certificate"),
+      certUnlocked?null:el("span",{class:"lock"},"🔒")
+    ])
+  ]);
+  side.appendChild(certRow);
+  return side;
+}
+
+/* ---------- Landing ---------- */
+function renderLanding(container){
+  const wrap = el("div",{class:"landing"});
+  wrap.appendChild(el("div",{class:"eyebrow"},"Caregiver Training"));
+  wrap.appendChild(el("h1",{},CONFIG.courseTitle));
+  wrap.appendChild(el("p",{class:"lead"}, CONFIG.courseSubtitle + ". Work through four short modules — each ends with a quick quiz — and you'll receive a completion certificate at the end."));
+
+  const overview = el("div",{class:"overview-card"});
+  MODULES.forEach((m,i)=>{
+    overview.appendChild(el("div",{class:"overview-row"},[
+      el("span",{class:"n"}, String(i+1).padStart(2,"0")),
+      el("div",{},[
+        el("div",{class:"t"}, m.title),
+        el("div",{class:"d"}, m.units.length+" units · "+m.quiz.length+" question quiz")
+      ])
+    ]));
+  });
+  wrap.appendChild(overview);
+
+  const nameField = el("div",{class:"name-field"},[
+    el("label",{for:"nameInput"},"Your full name (this will appear on your certificate)"),
+    el("input",{id:"nameInput", type:"text", placeholder:"e.g. Jordan Reyes", value: state.name||""})
+  ]);
+  wrap.appendChild(nameField);
+
+  const startBtn = el("button",{class:"btn", onclick:()=>{
+    const val = document.getElementById("nameInput").value.trim();
+    if(!val){ document.getElementById("nameInput").focus(); return; }
+    state.name = val;
+    state.started = true;
+    state.view = "unit";
+    state.moduleIndex = 0;
+    state.unitIndex = 0;
+    saveState();
+    render();
+  }}, state.started ? "Continue Course →" : "Begin Course →");
+  wrap.appendChild(startBtn);
+
+  container.appendChild(wrap);
+}
+
+/* ---------- Unit ---------- */
+function renderUnit(container){
+  const mi = state.moduleIndex, ui = state.unitIndex;
+  const mod = MODULES[mi];
+  const unit = mod.units[ui];
+  const wrap = el("div",{class:"main-inner"});
+  wrap.appendChild(el("div",{class:"unit-eyebrow"}, "Module "+(mi+1)+" · Unit "+(ui+1)+" of "+mod.units.length));
+  wrap.appendChild(el("h1",{class:"unit-title"}, unit.title));
+  wrap.appendChild(renderBlocks(unit.blocks));
+
+  const nav = el("div",{class:"unit-nav"});
+  const isLastUnit = ui === mod.units.length-1;
+
+  const backBtn = el("button",{class:"btn secondary", onclick:()=>{
+    if(ui>0){ state.unitIndex=ui-1; }
+    else if(mi>0){ state.moduleIndex=mi-1; state.unitIndex=MODULES[mi-1].units.length-1; }
+    else { state.view="landing"; }
+    saveState(); render(); window.scrollTo(0,0);
+  }}, "← Back");
+  nav.appendChild(backBtn);
+
+  const nextLabel = isLastUnit ? "Continue to Module "+(mi+1)+" Quiz →" : "Next Unit →";
+  const nextBtn = el("button",{class:"btn", onclick:()=>{
+    state.completedUnits[key(mi,ui)] = true;
+    if(isLastUnit){ state.view = "quiz"; }
+    else { state.unitIndex = ui+1; }
+    saveState(); render(); window.scrollTo(0,0);
+  }}, nextLabel);
+  nav.appendChild(nextBtn);
+
+  wrap.appendChild(nav);
+  container.appendChild(wrap);
+}
+
+/* ---------- Quiz ---------- */
+let quizAnswers = {};
+let quizSubmitted = false;
+
+function renderQuiz(container){
+  const mi = state.moduleIndex;
+  const mod = MODULES[mi];
+  const wrap = el("div",{class:"main-inner"});
+
+  wrap.appendChild(el("div",{class:"unit-eyebrow"}, "Module "+(mi+1)+" Quiz"));
+  wrap.appendChild(el("h1",{class:"unit-title"}, mod.title+" — Check Your Understanding"));
+  wrap.appendChild(el("div",{class:"quiz-progress"}, mod.quiz.length+" questions · "+CONFIG.passPercent+"% required to pass"));
+
+  if(!quizSubmitted){
+    mod.quiz.forEach((q,qi)=>{
+      const card = el("div",{class:"q-card"});
+      card.appendChild(el("div",{class:"q-num"}, "Question "+(qi+1)+" of "+mod.quiz.length));
+      card.appendChild(el("div",{class:"q-text"}, q.q));
+      const opts = q.type==="tf" ? ["True","False"] : q.options;
+      opts.forEach((optText,oi)=>{
+        const optVal = q.type==="tf" ? (oi===0) : oi;
+        const id = "q"+mi+"_"+qi+"_"+oi;
+        const label = el("label",{class:"opt", for:id},[
+          el("input",{type:"radio", name:"q"+mi+"_"+qi, id:id, onchange:()=>{ quizAnswers[qi]=optVal; }}),
+          el("span",{},optText)
+        ]);
+        card.appendChild(label);
+      });
+      wrap.appendChild(card);
+    });
+    const submitBtn = el("button",{class:"btn", onclick:()=>{
+      if(Object.keys(quizAnswers).length < mod.quiz.length){
+        alert("Please answer every question before submitting.");
+        return;
+      }
+      quizSubmitted = true;
+      render();
+      window.scrollTo(0,0);
+    }}, "Submit Answers");
+    wrap.appendChild(submitBtn);
+  } else {
+    let correctCount = 0;
+    mod.quiz.forEach((q,qi)=>{
+      const given = quizAnswers[qi];
+      const isCorrect = q.type==="tf" ? given===q.correct : given===q.correct;
+      if(isCorrect) correctCount++;
+      const card = el("div",{class:"q-card "+(isCorrect?"answered-correct":"answered-wrong")});
+      card.appendChild(el("div",{class:"q-num"}, "Question "+(qi+1)+" of "+mod.quiz.length));
+      card.appendChild(el("div",{class:"q-text"}, q.q));
+      const opts = q.type==="tf" ? ["True","False"] : q.options;
+      opts.forEach((optText,oi)=>{
+        const optVal = q.type==="tf" ? (oi===0) : oi;
+        const isThisCorrect = optVal===q.correct;
+        const isPicked = given===optVal;
+        let cls = "opt";
+        if(isThisCorrect) cls += " correct";
+        else if(isPicked && !isThisCorrect) cls += " wrong";
+        card.appendChild(el("div",{class:cls},[
+          el("span",{},optText+(isPicked?" (your answer)":"")+(isThisCorrect?" ✓":"")),
+        ]));
+      });
+      wrap.appendChild(card);
+    });
+
+    const pct = Math.round((correctCount/mod.quiz.length)*100);
+    const passed = pct >= CONFIG.passPercent;
+    state.quizScores["m"+mi] = {score:correctCount, total:mod.quiz.length};
+    if(passed) state.quizPassed["m"+mi] = true;
+    saveState();
+
+    const result = el("div",{class:"quiz-result "+(passed?"pass":"fail")},[
+      el("div",{class:"score"}, correctCount+" / "+mod.quiz.length),
+      el("p",{}, passed
+        ? "Nice work — you passed with "+pct+"%."
+        : "You scored "+pct+"%. You need "+CONFIG.passPercent+"% to pass — take another look at this module and try again."),
+    ]);
+
+    if(passed){
+      const isLastModule = mi === MODULES.length-1;
+      result.appendChild(el("button",{class:"btn", onclick:()=>{
+        quizAnswers = {}; quizSubmitted = false;
+        if(isLastModule){ state.view="certificate"; }
+        else { state.moduleIndex = mi+1; state.unitIndex = 0; state.view="unit"; }
+        saveState(); render(); window.scrollTo(0,0);
+      }}, isLastModule ? "Get Your Certificate →" : "Start Module "+(mi+2)+" →"));
+    } else {
+      result.appendChild(el("button",{class:"btn amber", onclick:()=>{
+        quizAnswers = {}; quizSubmitted = false;
+        state.unitIndex = 0; state.view="unit";
+        saveState(); render(); window.scrollTo(0,0);
+      }}, "Review Module "+(mi+1)));
+      result.appendChild(document.createTextNode(" "));
+      result.appendChild(el("button",{class:"btn secondary", onclick:()=>{
+        quizAnswers = {}; quizSubmitted = false;
+        render(); window.scrollTo(0,0);
+      }}, "Retake Quiz"));
+    }
+    wrap.appendChild(result);
+  }
+
+  container.appendChild(wrap);
+}
+
+/* ---------- Certificate ---------- */
+function makeCertId(){
+  const raw = (state.name||"caregiver") + "|" + (new Date()).toISOString().slice(0,10) + "|" + CONFIG.orgName;
+  let hash = 0;
+  for(let i=0;i<raw.length;i++){ hash = ((hash<<5)-hash) + raw.charCodeAt(i); hash |= 0; }
+  const code = Math.abs(hash).toString(36).toUpperCase().slice(0,8);
+  return "CHU-FA-" + code;
+}
+
+function syncCertificateToServer(){
+  if(!CONFIG.apiUrl){ return; } // not configured yet — nothing to sync to
+  if(state.certSynced){ return; } // already sent
+  const payload = { name: state.name, certId: state.certId, date: state.completedDate };
+  fetch(CONFIG.apiUrl, {
+    method: "POST",
+    body: JSON.stringify(payload) // plain-text body avoids a CORS preflight against Apps Script
+  }).then(()=>{
+    state.certSynced = true;
+    saveState();
+  }).catch(()=>{
+    // Offline or unreachable — leave certSynced false so we retry next time
+    // this certificate screen renders (e.g. on reconnect, or next visit).
+  });
+}
+
+function renderCertificate(container){
+  if(!state.certId){
+    state.certId = makeCertId();
+    state.completedDate = new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+    saveState();
+  }
+  syncCertificateToServer();
+  const wrap = el("div",{class:"cert-screen"});
+  wrap.appendChild(el("div",{class:"cert-intro"},[
+    el("h1",{},"You're all set 🎉"),
+    el("p",{},"You've completed all four modules. Your certificate is below — print or save it for your records.")
+  ]));
+
+  const cert = el("div",{class:"certificate"},[
+    el("div",{class:"cert-eyebrow"},"Certificate of Completion"),
+    el("div",{class:"cert-org"},[document.createTextNode(CONFIG.orgName), el("small",{},CONFIG.orgSub)]),
+    el("div",{class:"cert-divider"}),
+    el("div",{class:"cert-of"},"This certifies that"),
+    el("div",{class:"cert-name"}, state.name),
+    el("div",{class:"cert-body"}, "has successfully completed the "+CONFIG.courseTitle+", covering emergency response fundamentals, unconscious casualty care and CPR, bleeding and shock management, and burn care."),
+    el("div",{class:"cert-meta"},[
+      el("div",{},[el("div",{class:"label"},"Date completed"), el("div",{class:"val"},state.completedDate)]),
+      el("div",{},[el("div",{class:"label"},"Certificate ID"), el("div",{class:"val"},state.certId)]),
+      el("div",{},[el("div",{class:"label"},"Issuer"), el("div",{class:"val"},CONFIG.orgName)])
+    ]),
+    el("div",{class:"cert-disclaimer"}, CONFIG.disclaimer)
+  ]);
+  wrap.appendChild(cert);
+
+  const actions = el("div",{class:"cert-actions"},[
+    el("button",{class:"btn", onclick:()=>window.print()}, "🖨️ Print / Save as PDF"),
+    el("button",{class:"btn secondary", onclick:()=>{
+      if(confirm("This restarts the course from the beginning and clears your saved progress. Continue?")){
+        state = {name:"", started:false, view:"landing", moduleIndex:0, unitIndex:0, completedUnits:{}, quizPassed:{}, quizScores:{}, certId:null, completedDate:null};
+        saveState(); render(); window.scrollTo(0,0);
+      }
+    }}, "Start Over")
+  ]);
+  wrap.appendChild(actions);
+
+  container.appendChild(wrap);
+}
+
+/* ---------- Admin: login ---------- */
+function renderAdminLogin(container){
+  const wrap = el("div",{class:"admin-login"});
+  wrap.appendChild(el("h1",{},"Certificate Roster"));
+  wrap.appendChild(el("p",{},"Enter the admin password to view issued certificates."));
+  const input = el("input",{type:"password", placeholder:"Password", id:"adminPass", onkeydown:(e)=>{ if(e.key==="Enter") tryLogin(); }});
+  wrap.appendChild(input);
+  wrap.appendChild(el("div",{class:"err"}, adminError));
+  const tryLogin = ()=>{
+    const val = document.getElementById("adminPass").value;
+    if(val === CONFIG.adminPassword){
+      adminAuthed = true; adminError = "";
+      render();
+    } else {
+      adminError = "That password isn't right.";
+      render();
+      setTimeout(()=>{ const i=document.getElementById("adminPass"); if(i) i.focus(); },0);
+    }
+  };
+  wrap.appendChild(el("button",{class:"btn", style:"width:100%;justify-content:center;", onclick:tryLogin}, "View Roster"));
+  wrap.appendChild(el("div",{style:"margin-top:18px;"}, el("button",{class:"btn secondary", onclick:()=>{ location.hash=""; state.view = preAdminView || (state.started ? "unit" : "landing"); render(); }}, "← Back to course")));
+  container.appendChild(wrap);
+  setTimeout(()=>{ const i=document.getElementById("adminPass"); if(i) i.focus(); },0);
+}
+
+/* ---------- Admin: roster ---------- */
+function loadRoster(){
+  if(!CONFIG.apiUrl) return;
+  adminLoading = true; adminLoadError = ""; render();
+  fetch(CONFIG.apiUrl, {method:"GET"})
+    .then(r=>{ if(!r.ok) throw new Error("Request failed"); return r.json(); })
+    .then(data=>{ adminRoster = Array.isArray(data) ? data : []; adminLoading = false; render(); })
+    .catch(()=>{ adminLoading = false; adminLoadError = "Couldn't reach the certificate log. Check your connection or the API URL in CONFIG."; render(); });
+}
+
+function rosterToCsv(rows){
+  const header = ["Name","Certificate ID","Date Completed"];
+  const lines = [header.join(",")];
+  rows.forEach(r=>{
+    const line = [r.name, r.certId, r.date].map(v=>{
+      const s = String(v==null?"":v).replace(/"/g,'""');
+      return /[",\n]/.test(s) ? '"'+s+'"' : s;
+    }).join(",");
+    lines.push(line);
+  });
+  return lines.join("\n");
+}
+
+function renderAdminRoster(container){
+  const wrap = el("div",{class:"admin-screen"});
+  const head = el("div",{class:"admin-head"},[
+    el("div",{},[
+      el("h1",{},"Certificate Roster"),
+      el("p",{}, CONFIG.orgName+" · "+CONFIG.courseTitle)
+    ]),
+    el("button",{class:"btn secondary", onclick:()=>{ adminAuthed=false; location.hash=""; state.view = preAdminView || (state.started ? "unit" : "landing"); render(); }}, "Log out")
+  ]);
+  wrap.appendChild(head);
+
+  if(!CONFIG.apiUrl){
+    wrap.appendChild(el("div",{class:"admin-setup"}, [
+      el("strong",{},"Roster isn't connected yet. "),
+      document.createTextNode("Certificates are currently only saved on the device that issued them. To collect them all in one place, set up the free Google Sheet + Apps Script backend (see the SETUP.md file included with this app), then paste the Web App URL into "),
+      el("code",{},"CONFIG.apiUrl"),
+      document.createTextNode(" near the top of the script.")
+    ]));
+    container.appendChild(wrap);
+    return;
+  }
+
+  if(adminRoster === null && !adminLoading && !adminLoadError){
+    loadRoster();
+  }
+
+  const toolbar = el("div",{class:"admin-toolbar"});
+  toolbar.appendChild(el("input",{type:"text", placeholder:"Search by name or certificate ID…", value:adminSearch, oninput:(e)=>{ adminSearch = e.target.value; renderRosterBody(); }}));
+  toolbar.appendChild(el("button",{class:"btn secondary", onclick:loadRoster}, "↻ Refresh"));
+  const csvBtn = el("button",{class:"btn", onclick:()=>{
+    if(!adminRoster || !adminRoster.length) return;
+    const csv = rosterToCsv(adminRoster);
+    const blob = new Blob([csv], {type:"text/csv"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "certificate-roster.csv";
+    a.click();
+  }}, "⬇ Export CSV");
+  toolbar.appendChild(csvBtn);
+  wrap.appendChild(toolbar);
+
+  const tableWrap = el("div",{class:"admin-table-wrap", id:"rosterBody"});
+  wrap.appendChild(tableWrap);
+  wrap.appendChild(el("div",{class:"admin-status", id:"rosterStatus"}));
+
+  container.appendChild(wrap);
+  renderRosterBody();
+
+  function renderRosterBody(){
+    const body = document.getElementById("rosterBody");
+    const status = document.getElementById("rosterStatus");
+    if(!body) return;
+    body.innerHTML = "";
+    if(adminLoading){
+      body.appendChild(el("div",{class:"admin-empty"},"Loading certificates…"));
+      if(status) status.textContent = "";
+      return;
+    }
+    if(adminLoadError){
+      body.appendChild(el("div",{class:"admin-empty"}, adminLoadError));
+      if(status) status.textContent = "";
+      return;
+    }
+    const rows = (adminRoster||[]).filter(r=>{
+      if(!adminSearch.trim()) return true;
+      const q = adminSearch.toLowerCase();
+      return String(r.name||"").toLowerCase().includes(q) || String(r.certId||"").toLowerCase().includes(q);
+    });
+    if(!rows.length){
+      body.appendChild(el("div",{class:"admin-empty"}, adminRoster && adminRoster.length ? "No certificates match your search." : "No certificates issued yet."));
+    } else {
+      const table = el("table",{class:"admin-table"});
+      table.appendChild(el("thead",{},el("tr",{},[el("th",{},"Name"),el("th",{},"Certificate ID"),el("th",{},"Date Completed")])));
+      const tbody = el("tbody",{});
+      rows.forEach(r=>{
+        tbody.appendChild(el("tr",{},[el("td",{},r.name||""),el("td",{},r.certId||""),el("td",{},r.date||"")]));
+      });
+      table.appendChild(tbody);
+      body.appendChild(table);
+    }
+    if(status) status.textContent = (adminRoster?adminRoster.length:0)+" certificate(s) on record.";
+  }
+}
+
+/* =========================================================================
+   MAIN RENDER
+========================================================================= */
+function render(){
+  app.innerHTML = "";
+
+  if(location.hash === "#admin"){
+    if(state.view !== "admin"){ preAdminView = state.view; }
+    state.view = "admin";
+    app.appendChild(topBarMinimal());
+    const main = el("div",{class:"main"});
+    if(adminAuthed) renderAdminRoster(main);
+    else renderAdminLogin(main);
+    app.appendChild(main);
+    return;
+  }
+
+  if(!state.started){
+    app.appendChild(topBarMinimal());
+    const main = el("div",{class:"main"});
+    renderLanding(main);
+    app.appendChild(main);
+    app.appendChild(adminLinkButton());
+    return;
+  }
+  app.appendChild(topBar());
+  const layout = el("div",{class:"layout"});
+  layout.appendChild(sidebar());
+  const main = el("div",{class:"main"});
+  if(state.view==="unit") renderUnit(main);
+  else if(state.view==="quiz") renderQuiz(main);
+  else if(state.view==="certificate") renderCertificate(main);
+  else renderLanding(main);
+  layout.appendChild(main);
+  app.appendChild(layout);
+  app.appendChild(adminLinkButton());
+}
+
+function adminLinkButton(){
+  return el("div",{class:"admin-link", onclick:()=>{ location.hash="#admin"; state.view="admin"; render(); }}, "⚙ Admin");
+}
+
+function topBarMinimal(){
+  return el("div",{class:"topbar"},[
+    el("div",{class:"brand"},[document.createTextNode(CONFIG.orgName), el("small",{},CONFIG.courseTitle)])
+  ]);
+}
+
+render();
+</script>
+</body>
+</html>
