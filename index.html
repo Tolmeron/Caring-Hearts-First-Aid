@@ -39,7 +39,7 @@
   a{color:var(--forest);}
   button{font-family:var(--body);cursor:pointer;}
   .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
-
+ 
   /* ---------- Top bar / pulse progress ---------- */
   .topbar{
     background:var(--forest-deep);
@@ -76,7 +76,7 @@
     background:transparent;border:1px solid #3A544C;color:var(--paper-raised);
     border-radius:8px;padding:8px 10px;font-size:13px;
   }
-
+ 
   /* ---------- Layout ---------- */
   .layout{flex:1;display:flex;min-height:0;}
   .sidebar{
@@ -122,10 +122,10 @@
   .sidebar-unit.done .dot{background:var(--success);}
   .sidebar-unit.active .dot{background:#fff;}
   .sidebar-unit .lock{font-size:11px;opacity:0.7;}
-
+ 
   .main{flex:1;min-width:0;overflow-y:auto;padding:36px 40px 90px;}
   .main-inner{max-width:720px;margin:0 auto;}
-
+ 
   /* ---------- Landing ---------- */
   .landing{max-width:640px;margin:60px auto;padding:0 24px;}
   .landing .eyebrow{
@@ -171,7 +171,7 @@
   .btn.amber:hover{background:#8F4118;}
   .btn:disabled{opacity:0.45;cursor:not-allowed;}
   .btn:disabled:hover{background:var(--forest);}
-
+ 
   /* ---------- Unit content ---------- */
   .unit-eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--amber);margin-bottom:10px;}
   .unit-title{font-family:var(--display);font-size:30px;font-weight:600;color:var(--forest-deep);margin:0 0 22px;line-height:1.2;}
@@ -199,7 +199,7 @@
   .mnemonic .letter .big{font-family:var(--display);font-size:26px;font-weight:600;display:block;}
   .mnemonic .letter .small{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px;opacity:0.85;}
   .unit-nav{display:flex;justify-content:space-between;margin-top:36px;padding-top:24px;border-top:1px solid var(--line);}
-
+ 
   /* ---------- Quiz ---------- */
   .quiz-header{margin-bottom:22px;}
   .quiz-progress{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
@@ -228,7 +228,7 @@
   .quiz-result.pass .score{color:var(--success);}
   .quiz-result.fail .score{color:var(--pulse);}
   .quiz-result p{margin:4px 0 20px;color:var(--ink-soft);font-size:14.5px;}
-
+ 
   /* ---------- Certificate ---------- */
   .cert-screen{max-width:760px;margin:40px auto;padding:0 20px 60px;}
   .cert-intro{text-align:center;margin-bottom:26px;}
@@ -261,7 +261,7 @@
     font-size:11px;color:var(--ink-soft);line-height:1.6;
   }
   .cert-actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
-
+ 
   @media print{
     .topbar,.sidebar,.cert-actions,.cert-intro,.admin-link{display:none !important;}
     .layout,.main{display:block !important;padding:0;}
@@ -269,7 +269,7 @@
     .cert-screen{margin:0;max-width:none;}
     .certificate{border-width:3px;}
   }
-
+ 
   /* ---------- Admin corner link ---------- */
   .admin-link{
     position:fixed;bottom:14px;right:16px;z-index:30;
@@ -279,7 +279,7 @@
     display:flex;align-items:center;gap:6px;
   }
   .admin-link:hover{color:var(--forest);border-color:var(--forest);}
-
+ 
   /* ---------- Admin login ---------- */
   .admin-login{max-width:380px;margin:80px auto;padding:0 20px;text-align:center;}
   .admin-login h1{font-family:var(--display);font-size:24px;color:var(--forest-deep);margin:0 0 6px;}
@@ -289,7 +289,7 @@
     font-size:15px;text-align:center;margin-bottom:12px;font-family:var(--mono);
   }
   .admin-login .err{color:var(--pulse);font-size:13px;margin-bottom:10px;min-height:18px;}
-
+ 
   /* ---------- Admin roster ---------- */
   .admin-screen{max-width:920px;margin:0 auto;padding:34px 20px 80px;}
   .admin-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
@@ -319,7 +319,7 @@
     background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:5px;font-family:var(--mono);font-size:12.5px;
   }
   .admin-status{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
-
+ 
   @media (max-width: 860px){
     .sidebar{
       position:fixed;left:0;top:74px;bottom:0;transform:translateX(-100%);
@@ -333,7 +333,7 @@
     .certificate{padding:30px 20px;}
     .cert-name{font-size:28px;}
   }
-
+ 
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important;transition:none !important;}
   }
@@ -341,7 +341,7 @@
 </head>
 <body>
 <div id="app"></div>
-
+ 
 <script>
 /* =========================================================================
    CONFIG — edit these to match your organization
@@ -354,18 +354,18 @@ const CONFIG = {
   passPercent: 80,
   issuerLine: "Issued by Caring Hearts of Utah for internal training purposes",
   disclaimer: "This certificate confirms completion of Caring Hearts of Utah's internal Basic First Aid Awareness Course. It is not issued or endorsed by the American Heart Association, the American Red Cross, or any accredited certifying body, and it is not a substitute for a nationally accredited first aid, CPR, or AED certification. It does not qualify the holder to perform clinical procedures. This course is intended to build general first aid awareness for non-medical caregiving staff.",
-
+ 
   // ---- Certificate roster (admin) settings ----
   // Paste the Google Apps Script "Web app" URL here after deploying it (see SETUP.md).
   // Until this is set, certificates only save to the issuing device and the admin
   // roster will show setup instructions instead of a list.
-  apiUrl: "https://script.google.com/a/macros/caringheartsofutah.com/s/AKfycbzBNk15H9OEFYKZIwO0EJbA9fn8e8s3hCNdxsmYAPG6VbqwewM7gdm7YldvCnLYAyjE/exec",
+  apiUrl: "",
   // Simple client-side gate for the admin roster. NOT real security — anyone who
   // views this page's source can read it. Fine for a low-stakes internal list,
   // not for anything sensitive. Change it to whatever you like.
   adminPassword: "password123"
 };
-
+ 
 /* =========================================================================
    CONTENT — 4 modules, each with units and a quiz
 ========================================================================= */
@@ -674,12 +674,12 @@ const MODULES = [
   ]
 }
 ];
-
+ 
 /* =========================================================================
    STATE
 ========================================================================= */
 const STORAGE_KEY = "chu_first_aid_progress_v1";
-
+ 
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -691,7 +691,7 @@ function saveState(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   catch(e){ /* ignore — session will still work in-memory */ }
 }
-
+ 
 let state = loadState() || {
   name:"",
   started:false,
@@ -705,7 +705,7 @@ let state = loadState() || {
   completedDate:null,
   certSynced:false
 };
-
+ 
 /* Admin session — intentionally NOT persisted to localStorage or saved in `state`,
    so the password prompt reappears every visit. */
 let adminAuthed = false;
@@ -715,9 +715,13 @@ let adminLoading = false;
 let adminLoadError = "";
 let adminSearch = "";
 let preAdminView = null;     // the caregiver-side view to return to after leaving admin
-
+let certSyncStatus = "idle"; // idle | syncing | success | error | unconfigured
+let certSyncDetail = "";     // human-readable detail for troubleshooting
+let adminTestStatus = "idle"; // idle | testing | success | error
+let adminTestDetail = "";
+ 
 function key(mi,ui){ return "m"+mi+"-u"+ui; }
-
+ 
 function isModuleUnlocked(mi){
   if(mi===0) return true;
   return !!state.quizPassed["m"+(mi-1)];
@@ -735,13 +739,13 @@ function isQuizUnlocked(mi){
 function courseComplete(){
   return MODULES.every((_,mi)=> !!state.quizPassed["m"+mi]);
 }
-
+ 
 /* =========================================================================
    RENDER HELPERS
 ========================================================================= */
 const app = document.getElementById("app");
 let sidebarOpen = false;
-
+ 
 function el(tag, attrs={}, children=[]){
   const e = document.createElement(tag);
   for(const k in attrs){
@@ -756,7 +760,7 @@ function el(tag, attrs={}, children=[]){
   });
   return e;
 }
-
+ 
 function renderBlocks(blocks){
   const frag = document.createDocumentFragment();
   blocks.forEach(b=>{
@@ -774,7 +778,7 @@ function renderBlocks(blocks){
   });
   return frag;
 }
-
+ 
 /* ---- pulse line progress svg (signature element) ---- */
 function pulseSvg(){
   const totalModules = MODULES.length;
@@ -805,7 +809,7 @@ function pulseSvg(){
     ${circles}
   </svg>`;
 }
-
+ 
 function topBar(){
   const bar = el("div",{class:"topbar"},[
     el("button",{class:"menu-btn","aria-label":"Toggle module menu", onclick:()=>{sidebarOpen=!sidebarOpen; render();}}, "☰ Modules"),
@@ -814,7 +818,7 @@ function topBar(){
   ]);
   return bar;
 }
-
+ 
 function sidebar(){
   const side = el("div",{class:"sidebar"+(sidebarOpen?" open":"")});
   MODULES.forEach((mod,mi)=>{
@@ -867,14 +871,14 @@ function sidebar(){
   side.appendChild(certRow);
   return side;
 }
-
+ 
 /* ---------- Landing ---------- */
 function renderLanding(container){
   const wrap = el("div",{class:"landing"});
   wrap.appendChild(el("div",{class:"eyebrow"},"Caregiver Training"));
   wrap.appendChild(el("h1",{},CONFIG.courseTitle));
   wrap.appendChild(el("p",{class:"lead"}, CONFIG.courseSubtitle + ". Work through four short modules — each ends with a quick quiz — and you'll receive a completion certificate at the end."));
-
+ 
   const overview = el("div",{class:"overview-card"});
   MODULES.forEach((m,i)=>{
     overview.appendChild(el("div",{class:"overview-row"},[
@@ -886,13 +890,13 @@ function renderLanding(container){
     ]));
   });
   wrap.appendChild(overview);
-
+ 
   const nameField = el("div",{class:"name-field"},[
     el("label",{for:"nameInput"},"Your full name (this will appear on your certificate)"),
     el("input",{id:"nameInput", type:"text", placeholder:"e.g. Jordan Reyes", value: state.name||""})
   ]);
   wrap.appendChild(nameField);
-
+ 
   const startBtn = el("button",{class:"btn", onclick:()=>{
     const val = document.getElementById("nameInput").value.trim();
     if(!val){ document.getElementById("nameInput").focus(); return; }
@@ -905,10 +909,10 @@ function renderLanding(container){
     render();
   }}, state.started ? "Continue Course →" : "Begin Course →");
   wrap.appendChild(startBtn);
-
+ 
   container.appendChild(wrap);
 }
-
+ 
 /* ---------- Unit ---------- */
 function renderUnit(container){
   const mi = state.moduleIndex, ui = state.unitIndex;
@@ -918,10 +922,10 @@ function renderUnit(container){
   wrap.appendChild(el("div",{class:"unit-eyebrow"}, "Module "+(mi+1)+" · Unit "+(ui+1)+" of "+mod.units.length));
   wrap.appendChild(el("h1",{class:"unit-title"}, unit.title));
   wrap.appendChild(renderBlocks(unit.blocks));
-
+ 
   const nav = el("div",{class:"unit-nav"});
   const isLastUnit = ui === mod.units.length-1;
-
+ 
   const backBtn = el("button",{class:"btn secondary", onclick:()=>{
     if(ui>0){ state.unitIndex=ui-1; }
     else if(mi>0){ state.moduleIndex=mi-1; state.unitIndex=MODULES[mi-1].units.length-1; }
@@ -929,7 +933,7 @@ function renderUnit(container){
     saveState(); render(); window.scrollTo(0,0);
   }}, "← Back");
   nav.appendChild(backBtn);
-
+ 
   const nextLabel = isLastUnit ? "Continue to Module "+(mi+1)+" Quiz →" : "Next Unit →";
   const nextBtn = el("button",{class:"btn", onclick:()=>{
     state.completedUnits[key(mi,ui)] = true;
@@ -938,24 +942,24 @@ function renderUnit(container){
     saveState(); render(); window.scrollTo(0,0);
   }}, nextLabel);
   nav.appendChild(nextBtn);
-
+ 
   wrap.appendChild(nav);
   container.appendChild(wrap);
 }
-
+ 
 /* ---------- Quiz ---------- */
 let quizAnswers = {};
 let quizSubmitted = false;
-
+ 
 function renderQuiz(container){
   const mi = state.moduleIndex;
   const mod = MODULES[mi];
   const wrap = el("div",{class:"main-inner"});
-
+ 
   wrap.appendChild(el("div",{class:"unit-eyebrow"}, "Module "+(mi+1)+" Quiz"));
   wrap.appendChild(el("h1",{class:"unit-title"}, mod.title+" — Check Your Understanding"));
   wrap.appendChild(el("div",{class:"quiz-progress"}, mod.quiz.length+" questions · "+CONFIG.passPercent+"% required to pass"));
-
+ 
   if(!quizSubmitted){
     mod.quiz.forEach((q,qi)=>{
       const card = el("div",{class:"q-card"});
@@ -1006,20 +1010,20 @@ function renderQuiz(container){
       });
       wrap.appendChild(card);
     });
-
+ 
     const pct = Math.round((correctCount/mod.quiz.length)*100);
     const passed = pct >= CONFIG.passPercent;
     state.quizScores["m"+mi] = {score:correctCount, total:mod.quiz.length};
     if(passed) state.quizPassed["m"+mi] = true;
     saveState();
-
+ 
     const result = el("div",{class:"quiz-result "+(passed?"pass":"fail")},[
       el("div",{class:"score"}, correctCount+" / "+mod.quiz.length),
       el("p",{}, passed
         ? "Nice work — you passed with "+pct+"%."
         : "You scored "+pct+"%. You need "+CONFIG.passPercent+"% to pass — take another look at this module and try again."),
     ]);
-
+ 
     if(passed){
       const isLastModule = mi === MODULES.length-1;
       result.appendChild(el("button",{class:"btn", onclick:()=>{
@@ -1042,10 +1046,10 @@ function renderQuiz(container){
     }
     wrap.appendChild(result);
   }
-
+ 
   container.appendChild(wrap);
 }
-
+ 
 /* ---------- Certificate ---------- */
 function makeCertId(){
   const raw = (state.name||"caregiver") + "|" + (new Date()).toISOString().slice(0,10) + "|" + CONFIG.orgName;
@@ -1054,36 +1058,65 @@ function makeCertId(){
   const code = Math.abs(hash).toString(36).toUpperCase().slice(0,8);
   return "CHU-FA-" + code;
 }
-
-function syncCertificateToServer(){
-  if(!CONFIG.apiUrl){ return; } // not configured yet — nothing to sync to
-  if(state.certSynced){ return; } // already sent
+ 
+function syncCertificateToServer(onUpdate){
+  if(!CONFIG.apiUrl){
+    certSyncStatus = "unconfigured";
+    certSyncDetail = "";
+    if(onUpdate) onUpdate();
+    return;
+  }
+  if(state.certSynced){
+    certSyncStatus = "success";
+    certSyncDetail = "";
+    if(onUpdate) onUpdate();
+    return;
+  }
+  certSyncStatus = "syncing";
+  certSyncDetail = "";
+  if(onUpdate) onUpdate();
+ 
   const payload = { name: state.name, certId: state.certId, date: state.completedDate };
   fetch(CONFIG.apiUrl, {
     method: "POST",
     body: JSON.stringify(payload) // plain-text body avoids a CORS preflight against Apps Script
-  }).then(()=>{
-    state.certSynced = true;
-    saveState();
-  }).catch(()=>{
-    // Offline or unreachable — leave certSynced false so we retry next time
-    // this certificate screen renders (e.g. on reconnect, or next visit).
+  }).then(r=>{
+    if(!r.ok){ throw new Error("Server responded with HTTP "+r.status); }
+    return r.text().then(text=>{
+      // Apps Script errors often still return HTTP 200 with an error payload
+      try{
+        const parsed = JSON.parse(text);
+        if(parsed && parsed.status === "error"){
+          throw new Error(parsed.message || "Server reported an error");
+        }
+      }catch(parseErr){
+        // Not JSON, or JSON without a status field — treat as success if HTTP was ok
+      }
+      state.certSynced = true;
+      saveState();
+      certSyncStatus = "success";
+      certSyncDetail = "";
+      if(onUpdate) onUpdate();
+    });
+  }).catch(err=>{
+    certSyncStatus = "error";
+    certSyncDetail = String(err && err.message ? err.message : err);
+    if(onUpdate) onUpdate();
   });
 }
-
+ 
 function renderCertificate(container){
   if(!state.certId){
     state.certId = makeCertId();
     state.completedDate = new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
     saveState();
   }
-  syncCertificateToServer();
   const wrap = el("div",{class:"cert-screen"});
   wrap.appendChild(el("div",{class:"cert-intro"},[
     el("h1",{},"You're all set 🎉"),
     el("p",{},"You've completed all four modules. Your certificate is below — print or save it for your records.")
   ]));
-
+ 
   const cert = el("div",{class:"certificate"},[
     el("div",{class:"cert-eyebrow"},"Certificate of Completion"),
     el("div",{class:"cert-org"},[document.createTextNode(CONFIG.orgName), el("small",{},CONFIG.orgSub)]),
@@ -1099,21 +1132,53 @@ function renderCertificate(container){
     el("div",{class:"cert-disclaimer"}, CONFIG.disclaimer)
   ]);
   wrap.appendChild(cert);
-
+ 
   const actions = el("div",{class:"cert-actions"},[
     el("button",{class:"btn", onclick:()=>window.print()}, "🖨️ Print / Save as PDF"),
     el("button",{class:"btn secondary", onclick:()=>{
       if(confirm("This restarts the course from the beginning and clears your saved progress. Continue?")){
-        state = {name:"", started:false, view:"landing", moduleIndex:0, unitIndex:0, completedUnits:{}, quizPassed:{}, quizScores:{}, certId:null, completedDate:null};
+        state = {name:"", started:false, view:"landing", moduleIndex:0, unitIndex:0, completedUnits:{}, quizPassed:{}, quizScores:{}, certId:null, completedDate:null, certSynced:false};
         saveState(); render(); window.scrollTo(0,0);
       }
     }}, "Start Over")
   ]);
   wrap.appendChild(actions);
-
+ 
+  // ---- Sync status (visible so caregivers/admins can see whether this
+  // certificate made it into the central roster, and retry if not) ----
+  const statusBox = el("div",{class:"admin-status", id:"certSyncStatus", style:"text-align:center;margin-top:16px;"});
+  wrap.appendChild(statusBox);
+ 
   container.appendChild(wrap);
+  renderSyncStatus();
+ 
+  function renderSyncStatus(){
+    const box = document.getElementById("certSyncStatus");
+    if(!box) return;
+    box.innerHTML = "";
+    if(certSyncStatus === "unconfigured"){
+      box.appendChild(document.createTextNode("Certificate log isn't connected yet — this certificate is only saved on this device. (See SETUP.md.)"));
+      return;
+    }
+    if(certSyncStatus === "syncing"){
+      box.appendChild(document.createTextNode("Saving to the certificate log…"));
+      return;
+    }
+    if(certSyncStatus === "success"){
+      box.appendChild(document.createTextNode("✓ Saved to the central certificate log."));
+      return;
+    }
+    if(certSyncStatus === "error"){
+      box.appendChild(document.createTextNode("⚠ Couldn't save to the certificate log ("+certSyncDetail+"). "));
+      const retryBtn = el("button",{class:"btn secondary", style:"margin-left:8px;padding:6px 12px;font-size:12px;", onclick:()=>{ syncCertificateToServer(renderSyncStatus); }}, "Retry now");
+      box.appendChild(retryBtn);
+      return;
+    }
+  }
+ 
+  syncCertificateToServer(renderSyncStatus);
 }
-
+ 
 /* ---------- Admin: login ---------- */
 function renderAdminLogin(container){
   const wrap = el("div",{class:"admin-login"});
@@ -1138,7 +1203,7 @@ function renderAdminLogin(container){
   container.appendChild(wrap);
   setTimeout(()=>{ const i=document.getElementById("adminPass"); if(i) i.focus(); },0);
 }
-
+ 
 /* ---------- Admin: roster ---------- */
 function loadRoster(){
   if(!CONFIG.apiUrl) return;
@@ -1148,7 +1213,7 @@ function loadRoster(){
     .then(data=>{ adminRoster = Array.isArray(data) ? data : []; adminLoading = false; render(); })
     .catch(()=>{ adminLoading = false; adminLoadError = "Couldn't reach the certificate log. Check your connection or the API URL in CONFIG."; render(); });
 }
-
+ 
 function rosterToCsv(rows){
   const header = ["Name","Certificate ID","Date Completed"];
   const lines = [header.join(",")];
@@ -1161,7 +1226,7 @@ function rosterToCsv(rows){
   });
   return lines.join("\n");
 }
-
+ 
 function renderAdminRoster(container){
   const wrap = el("div",{class:"admin-screen"});
   const head = el("div",{class:"admin-head"},[
@@ -1172,7 +1237,65 @@ function renderAdminRoster(container){
     el("button",{class:"btn secondary", onclick:()=>{ adminAuthed=false; location.hash=""; state.view = preAdminView || (state.started ? "unit" : "landing"); render(); }}, "Log out")
   ]);
   wrap.appendChild(head);
-
+ 
+  // ---- Diagnostics: shows the configured URL and lets you round-trip test it ----
+  const diag = el("div",{class:"admin-setup", id:"diagBox"});
+  wrap.appendChild(diag);
+  renderDiag();
+ 
+  function renderDiag(){
+    diag.innerHTML = "";
+    diag.appendChild(el("div",{},[
+      el("strong",{},"Connection: "),
+      document.createTextNode(CONFIG.apiUrl ? "configured" : "not configured"),
+    ]));
+    diag.appendChild(el("div",{style:"font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin:6px 0 10px;word-break:break-all;"},
+      CONFIG.apiUrl ? CONFIG.apiUrl : "CONFIG.apiUrl is blank — see SETUP.md to connect a Google Sheet."));
+    const testBtn = el("button",{class:"btn secondary", style:"padding:8px 14px;font-size:13px;", disabled: !CONFIG.apiUrl || adminTestStatus==="testing", onclick: runConnectionTest},
+      adminTestStatus==="testing" ? "Testing…" : "Run Connection Test");
+    diag.appendChild(testBtn);
+    if(adminTestStatus === "success"){
+      diag.appendChild(el("div",{style:"margin-top:10px;color:var(--success);font-size:13px;"}, "✓ "+adminTestDetail));
+    } else if(adminTestStatus === "error"){
+      diag.appendChild(el("div",{style:"margin-top:10px;color:var(--pulse);font-size:13px;"}, "⚠ "+adminTestDetail));
+    }
+  }
+ 
+  function runConnectionTest(){
+    adminTestStatus = "testing"; adminTestDetail = ""; renderDiag();
+    const testId = "TEST-" + Math.random().toString(36).slice(2,8).toUpperCase();
+    const testPayload = { name:"Connection Test", certId: testId, date: new Date().toLocaleDateString("en-US") };
+ 
+    fetch(CONFIG.apiUrl, { method:"POST", body: JSON.stringify(testPayload) })
+      .then(r=>{
+        if(!r.ok) throw new Error("POST failed — server responded with HTTP "+r.status+". Check that the Apps Script is deployed with access set to \"Anyone.\"");
+        return r.text();
+      })
+      .then(postText=>{
+        // give Apps Script/Sheets a moment to commit the write before reading it back
+        return new Promise(resolve=>setTimeout(resolve, 1200));
+      })
+      .then(()=> fetch(CONFIG.apiUrl, {method:"GET"}))
+      .then(r=>{
+        if(!r.ok) throw new Error("GET failed — server responded with HTTP "+r.status+".");
+        return r.json();
+      })
+      .then(data=>{
+        if(!Array.isArray(data)) throw new Error("Server didn't return a list — got: "+JSON.stringify(data).slice(0,120));
+        const found = data.some(row=>row.certId === testId);
+        if(!found) throw new Error("POST seemed to succeed, but the test record never showed up on GET. Double-check the Apps Script code matches AppsScript.gs and that you deployed a \"New version\" after any edits.");
+        adminTestStatus = "success";
+        adminTestDetail = "Round trip worked — a test record was written and read back successfully. (You can delete the \""+testId+"\" row from your Google Sheet — it's just test data.)";
+        renderDiag();
+        adminRoster = null; loadRoster(); // refresh the real list too
+      })
+      .catch(err=>{
+        adminTestStatus = "error";
+        adminTestDetail = String(err && err.message ? err.message : err);
+        renderDiag();
+      });
+  }
+ 
   if(!CONFIG.apiUrl){
     wrap.appendChild(el("div",{class:"admin-setup"}, [
       el("strong",{},"Roster isn't connected yet. "),
@@ -1183,11 +1306,11 @@ function renderAdminRoster(container){
     container.appendChild(wrap);
     return;
   }
-
+ 
   if(adminRoster === null && !adminLoading && !adminLoadError){
     loadRoster();
   }
-
+ 
   const toolbar = el("div",{class:"admin-toolbar"});
   toolbar.appendChild(el("input",{type:"text", placeholder:"Search by name or certificate ID…", value:adminSearch, oninput:(e)=>{ adminSearch = e.target.value; renderRosterBody(); }}));
   toolbar.appendChild(el("button",{class:"btn secondary", onclick:loadRoster}, "↻ Refresh"));
@@ -1202,14 +1325,14 @@ function renderAdminRoster(container){
   }}, "⬇ Export CSV");
   toolbar.appendChild(csvBtn);
   wrap.appendChild(toolbar);
-
+ 
   const tableWrap = el("div",{class:"admin-table-wrap", id:"rosterBody"});
   wrap.appendChild(tableWrap);
   wrap.appendChild(el("div",{class:"admin-status", id:"rosterStatus"}));
-
+ 
   container.appendChild(wrap);
   renderRosterBody();
-
+ 
   function renderRosterBody(){
     const body = document.getElementById("rosterBody");
     const status = document.getElementById("rosterStatus");
@@ -1245,13 +1368,13 @@ function renderAdminRoster(container){
     if(status) status.textContent = (adminRoster?adminRoster.length:0)+" certificate(s) on record.";
   }
 }
-
+ 
 /* =========================================================================
    MAIN RENDER
 ========================================================================= */
 function render(){
   app.innerHTML = "";
-
+ 
   if(location.hash === "#admin"){
     if(state.view !== "admin"){ preAdminView = state.view; }
     state.view = "admin";
@@ -1262,7 +1385,7 @@ function render(){
     app.appendChild(main);
     return;
   }
-
+ 
   if(!state.started){
     app.appendChild(topBarMinimal());
     const main = el("div",{class:"main"});
@@ -1283,17 +1406,17 @@ function render(){
   app.appendChild(layout);
   app.appendChild(adminLinkButton());
 }
-
+ 
 function adminLinkButton(){
   return el("div",{class:"admin-link", onclick:()=>{ location.hash="#admin"; state.view="admin"; render(); }}, "⚙ Admin");
 }
-
+ 
 function topBarMinimal(){
   return el("div",{class:"topbar"},[
     el("div",{class:"brand"},[document.createTextNode(CONFIG.orgName), el("small",{},CONFIG.courseTitle)])
   ]);
 }
-
+ 
 render();
 </script>
 </body>
