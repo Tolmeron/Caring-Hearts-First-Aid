@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Hire Paperwork — Caring Hearts of Utah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root{
+    --paper:#EDF0E7; --paper-raised:#F7F8F3; --ink:#16241F; --ink-soft:#4B5A52;
+    --forest:#1F3A34; --forest-deep:#132623; --amber:#B5541F; --amber-soft:#E8B486;
+    --pulse:#C1392B; --success:#3C7A5C; --success-soft:#DCEAE1; --line:#CBD2C7; --radius:14px;
+    --display:'Fraunces',serif; --body:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--body);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+  #app{min-height:100vh;display:flex;flex-direction:column;}
+  button{font-family:var(--body);cursor:pointer;}
+  .topbar{background:var(--forest-deep);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:20;}
+  .brand{font-family:var(--display);font-weight:600;font-size:17px;}
+  .brand small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:1px;text-transform:uppercase;color:#9FB3AB;margin-top:2px;}
+  .progress-wrap{flex:1;display:flex;gap:4px;align-items:center;}
+  .progress-step{flex:1;height:5px;border-radius:3px;background:#3A544C;}
+  .progress-step.done{background:var(--success);}
+  .progress-step.active{background:var(--amber);}
+  .main{flex:1;padding:36px 20px 100px;}
+  .wrap{max-width:680px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:2px;font-size:11px;color:var(--amber);margin-bottom:10px;}
+  h1{font-family:var(--display);font-size:30px;font-weight:600;color:var(--forest-deep);margin:0 0 10px;line-height:1.2;}
+  h1.landing{font-size:38px;}
+  p.lead{font-size:15px;line-height:1.7;color:var(--ink-soft);margin:0 0 26px;}
+  .card{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .field .hint{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .field input[type=text],.field input[type=email],.field input[type=tel],.field input[type=date],.field input[type=number],.field select,.field textarea{
+    width:100%;padding:11px 13px;border-radius:9px;border:1.5px solid var(--line);font-size:14.5px;font-family:var(--body);background:#fff;
+  }
+  .field textarea{resize:vertical;min-height:60px;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--forest);outline-offset:1px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media (max-width:600px){.row2,.row3{grid-template-columns:1fr;}}
+  .radio-group,.check-group{display:flex;flex-wrap:wrap;gap:10px;}
+  .radio-opt,.check-opt{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13.5px;background:#fff;cursor:pointer;}
+  .radio-opt input,.check-opt input{accent-color:var(--forest);width:15px;height:15px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:#fff;border:none;border-radius:10px;padding:13px 22px;font-size:14.5px;font-weight:600;}
+  .btn:hover{background:var(--forest-deep);}
+  .btn.secondary{background:transparent;color:var(--forest);border:1.5px solid var(--forest);}
+  .btn.secondary:hover{background:var(--forest);color:#fff;}
+  .btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .nav-row{display:flex;justify-content:space-between;margin-top:26px;}
+  .section-title{font-family:var(--display);font-size:19px;font-weight:600;color:var(--forest-deep);margin:0 0 4px;}
+  .section-sub{font-size:13px;color:var(--ink-soft);margin:0 0 18px;}
+  .doc-list{list-style:none;padding:0;margin:0;}
+  .doc-list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .doc-list li:last-child{border-bottom:none;}
+  .doc-list .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;}
+  .callout{background:var(--success-soft);border-left:4px solid var(--success);border-radius:0 10px 10px 0;padding:14px 16px;margin:16px 0;font-size:13.5px;line-height:1.6;}
+  .callout.warn{background:#F6E3D6;border-left-color:var(--amber);}
+  .status-line{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:13.5px;}
+  .status-line .spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--forest);animation:spin 0.8s linear infinite;flex-shrink:0;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .status-line.done{color:var(--success);}
+  .status-line .icon{width:14px;text-align:center;flex-shrink:0;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================================
+   CONFIG
+========================================================================= */
+const CONFIG = {
+  orgName: "Caring Hearts of Utah",
+  orgAddress: "394 Timber Lakes Estates, Heber City, UT 84032",
+  worksiteEmployerName: "Caring Hearts of Utah",   // used on arbitration agreement
+  arbitrationCounty: "Wasatch County",              // VERIFY — used on arbitration agreement
+  arbitrationState: "Utah"                          // VERIFY — used on arbitration agreement
+};
+
+/* =========================================================================
+   FORM STEPS — the intake questionnaire
+   Each field's `key` is what gets referenced by the PDF coordinate map below.
+========================================================================= */
+const STEPS = [
+  { id:"personal", title:"Personal Information", sub:"This appears on most of your paperwork.", fields:[
+    {key:"firstName", label:"First name", type:"text", required:true, w:1},
+    {key:"middleName", label:"Middle name / initial", type:"text", w:1},
+    {key:"lastName", label:"Last name", type:"text", required:true, w:1},
+    {key:"otherNames", label:"Other last names you've used (if any)", type:"text", w:3},
+    {key:"dob", label:"Date of birth", type:"date", required:true, w:1},
+    {key:"ssn", label:"Social Security number", type:"text", required:true, w:1, placeholder:"XXX-XX-XXXX"},
+    {key:"gender", label:"Gender", type:"select", options:["","Male","Female"], w:1},
+    {key:"placeOfBirth", label:"Place of birth (city, state)", type:"text", w:1},
+    {key:"race", label:"Race (for background check form)", type:"text", w:1},
+    {key:"usCitizen", label:"U.S. citizen?", type:"select", options:["","Yes","No"], w:1},
+  ]},
+  { id:"identifiers", title:"Physical Description", sub:"Required on the background check authorization form only.", fields:[
+    {key:"eyeColor", label:"Eye color", type:"text", w:1},
+    {key:"hairColor", label:"Hair color", type:"text", w:1},
+    {key:"height", label:"Height", type:"text", w:1},
+    {key:"weight", label:"Weight", type:"text", w:1},
+  ]},
+  { id:"address", title:"Address & Contact", sub:"", fields:[
+    {key:"street", label:"Street address", type:"text", required:true, w:2},
+    {key:"apt", label:"Apt / unit #", type:"text", w:1},
+    {key:"city", label:"City", type:"text", required:true, w:1},
+    {key:"state", label:"State", type:"text", required:true, w:1},
+    {key:"zip", label:"ZIP code", type:"text", required:true, w:1},
+    {key:"county", label:"County", type:"text", w:1},
+    {key:"priorAddresses", label:"Prior addresses in the last 7 years (state and dates only)", type:"textarea", w:3},
+    {key:"email", label:"Email address", type:"email", required:true, w:1},
+    {key:"phone", label:"Primary phone", type:"tel", required:true, w:1},
+    {key:"phoneType", label:"Primary phone type", type:"select", options:["","Cell","Home","Work"], w:1},
+    {key:"phone2", label:"Secondary phone (optional)", type:"tel", w:1},
+    {key:"phone2Type", label:"Secondary phone type", type:"select", options:["","Cell","Home","Work"], w:1},
+  ]},
+  { id:"employment", title:"Employment Details", sub:"", fields:[
+    {key:"jobTitle", label:"Job title", type:"text", required:true, w:1},
+    {key:"firstDay", label:"First day of employment", type:"date", w:1},
+    {key:"payRate", label:"Rate of pay ($)", type:"text", w:1},
+    {key:"payType", label:"Hourly or salary", type:"select", options:["","Hourly","Salary"], w:1},
+    {key:"employmentStatus", label:"Employment status", type:"select", options:["","Full Time (30+ hrs)","Part Time (<30 hrs)","Seasonal FT","Seasonal PT","On Call / Temp"], w:2},
+    {key:"jobLocation", label:"Job location", type:"text", w:1},
+    {key:"department", label:"Department", type:"text", w:1},
+    {key:"division", label:"Division", type:"text", w:1},
+  ]},
+  { id:"emergency", title:"Emergency Contact", sub:"", fields:[
+    {key:"ecName", label:"Emergency contact name", type:"text", required:true, w:2},
+    {key:"ecRelation", label:"Relationship", type:"text", w:1},
+    {key:"ecPhone", label:"Emergency contact phone", type:"tel", required:true, w:1},
+  ]},
+  { id:"w4", title:"Tax Withholding (Form W-4)", sub:"This pre-fills Step 1 of your W-4. You'll still want to review Steps 2\u20134 yourself before signing \u2014 they affect how much tax is withheld.", fields:[
+    {key:"filingStatus", label:"Filing status", type:"select", required:true, options:["","Single or Married filing separately","Married filing jointly or Qualifying surviving spouse","Head of household"], w:3},
+    {key:"multipleJobsBox", label:"Check this box if you (and your spouse, if applicable) have exactly two jobs total", type:"checkbox", w:3},
+    {key:"dependentsUnder17", label:"Number of qualifying children under 17", type:"number", w:1},
+    {key:"otherDependents", label:"Number of other dependents", type:"number", w:1},
+    {key:"w4OtherIncome", label:"Other income not from jobs ($, optional)", type:"text", w:1},
+    {key:"w4Deductions", label:"Extra deductions ($, optional)", type:"text", w:1},
+    {key:"w4ExtraWithholding", label:"Extra withholding per pay period ($, optional)", type:"text", w:1},
+    {key:"w4Exempt", label:"I claim exemption from withholding for this year", type:"checkbox", w:1},
+  ]},
+  { id:"i9", title:"Work Authorization (Form I-9, Section 1)", sub:"Section 2 is completed separately by Caring Hearts after reviewing your ID documents in person.", fields:[
+    {key:"citizenshipStatus", label:"Citizenship / immigration status", type:"select", required:true, options:[
+      "", "A citizen of the United States", "A noncitizen national of the United States",
+      "A lawful permanent resident", "An alien authorized to work until a specific date"], w:3},
+    {key:"alienWorkUntil", label:"Work authorized until (if applicable)", type:"date", w:1},
+    {key:"uscisNumber", label:"USCIS or A-Number (if applicable)", type:"text", w:1},
+    {key:"i94Number", label:"Form I-94 Admission Number (if applicable)", type:"text", w:1},
+    {key:"foreignPassport", label:"Foreign passport number & country (if applicable)", type:"text", w:1},
+  ]},
+  { id:"health", title:"Health Screening", sub:"Used on the Employee Health Evaluation form.", fields:[
+    {key:"physicianName", label:"Your physician's name", type:"text", w:2},
+    {key:"allergies", label:"Any known allergies?", type:"textarea", w:3},
+    {key:"tbTestDate", label:"TB skin test conversion date (if applicable)", type:"date", w:1},
+    {key:"chestXrayDate", label:"Last chest X-ray date (if applicable)", type:"date", w:1},
+    {key:"chestXrayResult", label:"Chest X-ray result (if applicable)", type:"text", w:1},
+  ]},
+  { id:"banking", title:"Direct Deposit", sub:"Optional \u2014 leave blank if you'd rather be paid by check.", fields:[
+    {key:"wantsDirectDeposit", label:"Set up direct deposit?", type:"select", options:["","Yes","No, pay by check"], w:1},
+    {key:"bankName", label:"Bank name", type:"text", w:1},
+    {key:"accountType", label:"Checking or savings", type:"select", options:["","Checking","Savings"], w:1},
+    {key:"routingNumber", label:"Routing number", type:"text", w:1},
+    {key:"accountNumber", label:"Account number", type:"text", w:1},
+    {key:"depositAmount", label:"Amount or % of net pay to deposit", type:"text", w:1},
+  ]},
+  { id:"consents", title:"Consents & Disclosures", sub:"", fields:[
+    {key:"w2Electronic", label:"Receive your W-2 electronically instead of on paper?", type:"select", options:["","Yes, electronically","No, paper copy"], w:2},
+    {key:"medicalNoticeElectronic", label:"Receive medical benefit plan notices electronically?", type:"select", options:["","Yes, electronically","No, paper copy"], w:2},
+  ]},
+];
+
+/* =========================================================================
+   PDF COORDINATE MAP
+   Each document lists overlay entries: { page, x, bottom, size, key, fmt }
+   `bottom` is measured DOWN from the top of the page (matching how the
+   source text was mapped) and gets converted to PDF's bottom-up coordinate
+   system at render time. `fmt` is an optional function to transform the
+   raw form value before printing (e.g. checkbox marks, date formatting).
+========================================================================= */
+const PAGE_H = 792;
+const mark = () => "X";
+const fmtDate = (v) => { if(!v) return ""; const [y,m,d]=v.split("-"); return m&&d&&y ? `${m}/${d}/${y}` : v; };
+
+const DOCS = [
+  { id:"background_check", label:"Criminal Background Screening Authorization", file:"assets/background_check.pdf", overlays:[
+    {page:0,x:117,bottom:159.7,size:9,key:"firstName"},
+    {page:0,x:293,bottom:159.7,size:9,key:"lastName"},
+    {page:0,x:97,bottom:421.6,size:9,key:"firstName"},
+    {page:0,x:352,bottom:421.6,size:9,key:"ssn"},
+    {page:0,x:108,bottom:436.1,size:9,key:"middleName"},
+    {page:0,x:398,bottom:436.1,size:9,key:"dob",fmt:fmtDate},
+    {page:0,x:104,bottom:450.7,size:9,key:"lastName"},
+    {page:0,x:358,bottom:450.7,size:9,key:"race"},
+    {page:0,x:117,bottom:479.8,size:9,key:"gender"},
+    {page:0,x:104,bottom:508.8,size:9,key:"street"},
+    {page:0,x:373,bottom:508.8,size:9,key:"eyeColor"},
+    {page:0,x:104,bottom:523.4,size:9,key:"city"},
+    {page:0,x:373,bottom:523.4,size:9,key:"hairColor"},
+    {page:0,x:104,bottom:537.9,size:9,key:"state"},
+    {page:0,x:373,bottom:537.9,size:9,key:"height"},
+    {page:0,x:104,bottom:552.5,size:9,key:"zip"},
+    {page:0,x:373,bottom:552.5,size:9,key:"weight"},
+    {page:0,x:113,bottom:567.0,size:9,key:"county"},
+    {page:0,x:378,bottom:567.0,size:9,key:"usCitizen"},
+    {page:0,x:390,bottom:582,size:9,key:"placeOfBirth"},
+    {page:0,x:72,bottom:611,size:8,key:"priorAddresses"},
+    {page:0,x:146,bottom:639.8,size:9,key:"phone"},
+    {page:0,x:382,bottom:639.8,size:9,key:"phoneType"},
+    {page:0,x:162,bottom:654.3,size:9,key:"phone2"},
+    {page:0,x:382,bottom:654.3,size:9,key:"phone2Type"},
+    {page:0,x:146,bottom:668.9,size:9,key:"email"},
+  ]},
+  { id:"w4", label:"Form W-4 (Employee's Withholding Certificate)", file:"assets/w4.pdf", overlays:[
+    {page:0,x:100,bottom:105,size:9,key:"firstAndMiddleForW4"},
+    {page:0,x:278,bottom:105,size:9,key:"lastName"},
+    {page:0,x:479,bottom:105,size:8,key:"ssn"},
+    {page:0,x:98,bottom:128,size:9,key:"street"},
+    {page:0,x:98,bottom:152,size:9,key:"cityStateZip"},
+    {page:0,x:101,bottom:167,size:10,key:"w4FilingSingle"},
+    {page:0,x:101,bottom:180,size:10,key:"w4FilingJoint"},
+    {page:0,x:101,bottom:191,size:10,key:"w4FilingHOH"},
+    {page:0,x:562,bottom:405,size:10,key:"multipleJobsBoxMark"},
+    {page:0,x:392,bottom:489,size:9,key:"dependentsUnder17Amt"},
+    {page:0,x:392,bottom:501,size:9,key:"otherDependentsAmt"},
+    {page:0,x:491,bottom:525,size:9,key:"w4Step3Total"},
+    {page:0,x:485,bottom:561,size:9,key:"w4OtherIncome"},
+    {page:0,x:485,bottom:597,size:9,key:"w4Deductions"},
+    {page:0,x:485,bottom:615,size:9,key:"w4ExtraWithholding"},
+    {page:0,x:101,bottom:652,size:10,key:"w4ExemptMark"},
+  ]},
+  { id:"i9", label:"Form I-9 (Employment Eligibility Verification), Section 1", file:"assets/i9.pdf", overlays:[
+    {page:0,x:42,bottom:189,size:9,key:"lastName"},
+    {page:0,x:204,bottom:189,size:9,key:"firstName"},
+    {page:0,x:348,bottom:189,size:9,key:"middleName"},
+    {page:0,x:420,bottom:189,size:8,key:"otherNames"},
+    {page:0,x:42,bottom:215,size:9,key:"street"},
+    {page:0,x:234,bottom:215,size:9,key:"apt"},
+    {page:0,x:306,bottom:215,size:8,key:"cityStateZip"},
+    {page:0,x:42,bottom:241,size:9,key:"dob",fmt:fmtDate},
+    {page:0,x:150,bottom:241,size:9,key:"ssn"},
+    {page:0,x:264,bottom:241,size:8,key:"email"},
+    {page:0,x:456,bottom:241,size:9,key:"phone"},
+    {page:0,x:184,bottom:265,size:10,key:"i9Status1Mark"},
+    {page:0,x:184,bottom:277,size:10,key:"i9Status2Mark"},
+    {page:0,x:184,bottom:289,size:10,key:"i9Status3Mark"},
+    {page:0,x:184,bottom:302,size:10,key:"i9Status4Mark"},
+    {page:0,x:193,bottom:331,size:8,key:"uscisNumber"},
+    {page:0,x:281,bottom:331,size:8,key:"i94Number"},
+    {page:0,x:401,bottom:331,size:8,key:"foreignPassport"},
+  ]},
+  { id:"contract", label:"Contract of Employment", file:"assets/contract.pdf", overlays:[
+    {page:0,x:246,bottom:166.1,size:9,key:"contractDay"},
+    {page:0,x:292,bottom:166.1,size:9,key:"contractMonth"},
+    {page:0,x:430,bottom:166.1,size:9,key:"contractYear"},
+    {page:0,x:395,bottom:180.7,size:9,key:"fullName"},
+  ]},
+  { id:"health_eval", label:"Employee Health Evaluation", file:"assets/health_eval.pdf", overlays:[
+    {page:0,x:111,bottom:127.4,size:9,key:"fullName"},
+    {page:0,x:363,bottom:127.4,size:9,key:"ssn"},
+    {page:0,x:119,bottom:146.4,size:8,key:"fullAddress"},
+    {page:0,x:123,bottom:165.4,size:9,key:"jobTitle"},
+    {page:0,x:387,bottom:165.4,size:9,key:"physicianName"},
+    {page:0,x:178,bottom:184.3,size:9,key:"ecName"},
+    {page:0,x:381,bottom:184.3,size:9,key:"ecRelation"},
+    {page:0,x:122,bottom:203.3,size:8,key:"fullAddress"},
+    {page:0,x:374,bottom:203.3,size:9,key:"phone"},
+    {page:0,x:72,bottom:594.9,size:8,key:"allergies"},
+    {page:0,x:406,bottom:446.5,size:8,key:"tbTestDate",fmt:fmtDate},
+    {page:0,x:186,bottom:459.2,size:8,key:"chestXrayDate",fmt:fmtDate},
+    {page:0,x:321,bottom:459.2,size:8,key:"chestXrayResult"},
+  ]},
+  { id:"zamp_new_employee_info", label:"Zamp HR New Employee Information Form", file:"assets/zamp_new_employee_info.pdf", overlays:[
+    {page:0,x:200,bottom:120,size:9,key:"orgNameConst"},
+    {page:0,x:200,bottom:162,size:9,key:"fullName"},
+    {page:0,x:480,bottom:162,size:9,key:"dob",fmt:fmtDate},
+    {page:0,x:180,bottom:200,size:9,key:"ssn"},
+    {page:0,x:420,bottom:200,size:9,key:"phone"},
+    {page:0,x:120,bottom:238,size:8,key:"street"},
+    {page:0,x:330,bottom:238,size:8,key:"apt"},
+    {page:0,x:420,bottom:238,size:8,key:"city"},
+    {page:0,x:100,bottom:278,size:9,key:"state"},
+    {page:0,x:200,bottom:278,size:9,key:"zip"},
+    {page:0,x:320,bottom:278,size:8,key:"email"},
+    {page:0,x:190,bottom:318,size:8,key:"firstDay",fmt:fmtDate},
+    {page:0,x:360,bottom:318,size:8,key:"jobTitle"},
+    {page:0,x:520,bottom:318,size:8,key:"payRate"},
+    {page:0,x:130,bottom:358,size:8,key:"gender"},
+    {page:0,x:280,bottom:358,size:8,key:"jobLocation"},
+    {page:0,x:400,bottom:358,size:8,key:"department"},
+    {page:0,x:520,bottom:358,size:8,key:"division"},
+    {page:0,x:230,bottom:398,size:8,key:"ecName"},
+    {page:0,x:450,bottom:398,size:8,key:"ecRelation"},
+    {page:0,x:260,bottom:428,size:8,key:"ecPhone"},
+  ], note:"Only source page that was a flattened image rather than real text \u2014 double-check this one visually after deploying." },
+  { id:"direct_deposit", label:"Direct Deposit Authorization", file:"assets/direct_deposit.pdf", overlays:[
+    {page:0,x:110,bottom:116,size:9,key:"orgNameConst"},
+    {page:0,x:110,bottom:135,size:9,key:"fullName"},
+    {page:0,x:435,bottom:135,size:9,key:"ssn"},
+    {page:0,x:45,bottom:263,size:9,key:"bankName"},
+    {page:0,x:45,bottom:317,size:9,key:"accountType"},
+    {page:0,x:45,bottom:341,size:9,key:"routingNumber"},
+    {page:0,x:45,bottom:367,size:9,key:"accountNumber"},
+    {page:0,x:45,bottom:406,size:9,key:"depositAmount"},
+  ]},
+  { id:"zamp_acknowledgment", label:"Zamp HR Employee Acknowledgment Form", file:"assets/zamp_acknowledgment.pdf", overlays:[
+    {page:0,x:150,bottom:109,size:9,key:"fullName"},
+    {page:0,x:193,bottom:122,size:9,key:"orgNameConst"},
+  ]},
+  { id:"arbitration", label:"Mutual Arbitration Agreement", file:"assets/arbitration.pdf", overlays:[
+    {page:0,x:246,bottom:116,size:9,key:"fullName"},
+    {page:0,x:106,bottom:126,size:9,key:"orgNameConst"},
+    {page:0,x:121,bottom:373,size:9,key:"arbitrationCountyConst"},
+    {page:0,x:361,bottom:373,size:9,key:"arbitrationStateConst"},
+  ]},
+  { id:"zamp_intro", label:"Intro to Zamp HR (Acknowledgment)", file:"assets/zamp_intro.pdf", overlays:[
+    {page:0,x:70,bottom:600,size:9,key:"fullName"},
+  ]},
+  { id:"econsent_medical", label:"Electronic Consent \u2014 Medical Benefit Plan Notices", file:"assets/econsent_medical.pdf", overlays:[
+    {page:0,x:142,bottom:104,size:9,key:"fullName"},
+    {page:0,x:142,bottom:123,size:9,key:"email"},
+    {page:0,x:142,bottom:141,size:9,key:"street"},
+    {page:0,x:78,bottom:160,size:9,key:"city"},
+    {page:0,x:252,bottom:160,size:9,key:"state"},
+    {page:0,x:426,bottom:160,size:9,key:"zip"},
+    {page:0,x:38,bottom:658,size:11,key:"medicalConsentYesMark"},
+    {page:0,x:38,bottom:681,size:11,key:"medicalConsentNoMark"},
+  ]},
+  { id:"w2_econsent", label:"W-2 Electronic Consent", file:"assets/w2_econsent.pdf", overlays:[
+    {page:0,x:142,bottom:86,size:9,key:"fullName"},
+    {page:0,x:142,bottom:105,size:9,key:"email"},
+    {page:0,x:142,bottom:124,size:9,key:"street"},
+    {page:0,x:78,bottom:143,size:9,key:"city"},
+    {page:0,x:252,bottom:143,size:9,key:"state"},
+    {page:0,x:426,bottom:143,size:9,key:"zip"},
+  ]},
+  { id:"handbook", label:"Zamp HR Employee Handbook \u2014 Acknowledgment Page", file:"assets/handbook.pdf", overlays:[
+    {page:15,x:160,bottom:303,size:10,key:"fullName"},
+  ]},
+  { id:"health_insurance", label:"Health Insurance Notice (reference \u2014 signature only, nothing to pre-fill)", file:"assets/health_insurance.pdf", overlays:[] },
+  { id:"abuse_ack", label:"Abuse Investigation & Reporting Policy (reference \u2014 signature only)", file:"assets/abuse_ack.pdf", overlays:[] },
+  { id:"welcome_and_checklist", label:"Welcome Letter & New Employee Checklist (reference only)", file:"assets/welcome_and_checklist.pdf", overlays:[] },
+];
+
+/* =========================================================================
+   DERIVED / COMPUTED FIELDS
+   Some PDF fields aren't raw form inputs \u2014 they're computed from other
+   answers (full name, checkbox marks, constants, etc). This runs right
+   before filling.
+========================================================================= */
+function computeDerived(data){
+  const d = {...data};
+  d.fullName = [d.firstName,d.middleName,d.lastName].filter(Boolean).join(" ");
+  d.firstAndMiddleForW4 = [d.firstName,d.middleName].filter(Boolean).join(" ");
+  d.cityStateZip = [d.city, d.state, d.zip].filter(Boolean).join(", ");
+  d.fullAddress = [d.street, d.apt ? "Apt "+d.apt : "", d.cityStateZip].filter(Boolean).join(", ");
+
+  d.orgNameConst = CONFIG.orgName;
+  d.arbitrationCountyConst = CONFIG.arbitrationCounty;
+  d.arbitrationStateConst = CONFIG.arbitrationState;
+
+  d.contractDay = ""; d.contractMonth = ""; d.contractYear = ""; // left blank \u2014 filled in at signing
+
+  d.w4FilingSingle = d.filingStatus === "Single or Married filing separately" ? mark() : "";
+  d.w4FilingJoint = d.filingStatus === "Married filing jointly or Qualifying surviving spouse" ? mark() : "";
+  d.w4FilingHOH = d.filingStatus === "Head of household" ? mark() : "";
+  d.multipleJobsBoxMark = d.multipleJobsBox ? mark() : "";
+  d.w4ExemptMark = d.w4Exempt ? mark() : "";
+  d.dependentsUnder17Amt = d.dependentsUnder17 ? (Number(d.dependentsUnder17)*2200).toLocaleString() : "";
+  d.otherDependentsAmt = d.otherDependents ? (Number(d.otherDependents)*500).toLocaleString() : "";
+  const step3total = (Number(d.dependentsUnder17||0)*2200) + (Number(d.otherDependents||0)*500);
+  d.w4Step3Total = step3total ? step3total.toLocaleString() : "";
+
+  d.i9Status1Mark = d.citizenshipStatus === "A citizen of the United States" ? mark() : "";
+  d.i9Status2Mark = d.citizenshipStatus === "A noncitizen national of the United States" ? mark() : "";
+  d.i9Status3Mark = d.citizenshipStatus === "A lawful permanent resident" ? mark() : "";
+  d.i9Status4Mark = d.citizenshipStatus === "An alien authorized to work until a specific date" ? mark() : "";
+
+  d.medicalConsentYesMark = d.medicalNoticeElectronic === "Yes, electronically" ? mark() : "";
+  d.medicalConsentNoMark = d.medicalNoticeElectronic === "No, paper copy" ? mark() : "";
+
+  return d;
+}
+
+/* =========================================================================
+   STATE
+========================================================================= */
+let formData = {};
+let currentStep = -1; // -1 = landing, STEPS.length = review, STEPS.length+1 = generating/done
+let fillStatuses = {}; // docId -> "pending"|"working"|"done"|"error"
+
+/* =========================================================================
+   RENDER HELPERS
+========================================================================= */
+const app = document.getElementById("app");
+function el(tag, attrs={}, children=[]){
+  const e = document.createElement(tag);
+  for(const k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null) return;
+    e.appendChild(typeof c==="string" ? document.createTextNode(c) : c);
+  });
+  return e;
+}
+
+function topBar(){
+  const totalSteps = STEPS.length + 1; // +1 for review
+  const bar = el("div",{class:"topbar"},[
+    el("div",{class:"brand"},[document.createTextNode(CONFIG.orgName), el("small",{},"New Hire Paperwork")]),
+  ]);
+  if(currentStep >= 0 && currentStep <= STEPS.length){
+    const pw = el("div",{class:"progress-wrap"});
+    for(let i=0;i<totalSteps;i++){
+      const cls = i<currentStep?"done":(i===currentStep?"active":"");
+      pw.appendChild(el("div",{class:"progress-step "+cls}));
+    }
+    bar.appendChild(pw);
+  }
+  return bar;
+}
+
+/* ---------- Landing ---------- */
+function renderLanding(container){
+  const wrap = el("div",{class:"wrap"});
+  wrap.appendChild(el("div",{class:"eyebrow"},"Caregiver Onboarding"));
+  wrap.appendChild(el("h1",{class:"landing"},"Let's get your paperwork done."));
+  wrap.appendChild(el("p",{class:"lead"},"Answer a set of questions once, and we'll fill in your name, address, and other details across all your new-hire forms automatically. At the end you'll download everything, ready to review and sign."));
+
+  const card = el("div",{class:"card"});
+  card.appendChild(el("div",{class:"section-title"},"What you'll be filling out"));
+  const list = el("ul",{class:"doc-list"});
+  DOCS.filter(d=>d.overlays.length>0).forEach(d=>{
+    list.appendChild(el("li",{},[el("span",{class:"dot"}), document.createTextNode(d.label)]));
+  });
+  card.appendChild(list);
+  wrap.appendChild(card);
+
+  wrap.appendChild(el("div",{class:"callout warn"},"Every signature line and \u201cdate signed\u201d line is left blank on purpose \u2014 you'll sign those yourself (on paper or through a separate e-sign step), since that's a distinct legal moment from filling in your info."));
+
+  const diagCard = el("div",{class:"card", id:"diagCard"});
+  diagCard.appendChild(el("div",{class:"section-title"},"Having trouble? Test file access"));
+  diagCard.appendChild(el("div",{class:"section-sub"},"Checks that this page can actually reach its PDF files \u2014 useful if a previous attempt failed with every document erroring out."));
+  const diagResult = el("div",{id:"diagResult", style:"font-family:var(--mono);font-size:12px;"});
+  diagCard.appendChild(diagResult);
+  diagCard.appendChild(el("button",{class:"btn secondary", onclick: runDiagnostic},"Run Test"));
+  wrap.appendChild(diagCard);
+
+  wrap.appendChild(el("button",{class:"btn", onclick:()=>{ currentStep=0; render(); window.scrollTo(0,0); }},"Get Started \u2192"));
+  container.appendChild(wrap);
+}
+
+async function runDiagnostic(){
+  const out = document.getElementById("diagResult");
+  out.innerHTML = "";
+  const testUrl = new URL("assets/background_check.pdf", location.href).href;
+  out.appendChild(el("div",{},"Testing: "+testUrl));
+  if(typeof PDFLib === "undefined"){
+    out.appendChild(el("div",{style:"color:var(--pulse);margin-top:6px;"},"\u26a0 pdf-lib library did not load from cdnjs.cloudflare.com \u2014 check for an ad blocker or network filter blocking that domain."));
+  } else {
+    out.appendChild(el("div",{style:"color:var(--success);margin-top:6px;"},"\u2713 pdf-lib library loaded."));
+  }
+  if(typeof JSZip === "undefined"){
+    out.appendChild(el("div",{style:"color:var(--pulse);"},"\u26a0 JSZip library did not load from cdnjs.cloudflare.com."));
+  } else {
+    out.appendChild(el("div",{style:"color:var(--success);"},"\u2713 JSZip library loaded."));
+  }
+  try{
+    const r = await fetch(testUrl);
+    if(r.ok){
+      out.appendChild(el("div",{style:"color:var(--success);margin-top:6px;"},"\u2713 Successfully fetched a test PDF (HTTP "+r.status+"). File access looks fine."));
+    } else {
+      out.appendChild(el("div",{style:"color:var(--pulse);margin-top:6px;"},"\u26a0 HTTP "+r.status+" \u2014 the assets folder likely isn't where index.html expects it. Try opening this exact URL directly in your browser: "+testUrl));
+    }
+  }catch(e){
+    out.appendChild(el("div",{style:"color:var(--pulse);margin-top:6px;"},"\u26a0 Network error: "+e.message+". If you're opening this file directly from your computer (a file:/// address) instead of a live https:// link, that's the problem \u2014 browsers block this kind of file loading outside a real web server. Deploy it via GitHub Pages and open the https:// link instead."));
+  }
+}
+
+/* ---------- Step form ---------- */
+function renderStep(container){
+  const step = STEPS[currentStep];
+  const wrap = el("div",{class:"wrap"});
+  wrap.appendChild(el("div",{class:"eyebrow"}, "Step "+(currentStep+1)+" of "+(STEPS.length+1)));
+  wrap.appendChild(el("h1",{}, step.title));
+  if(step.sub) wrap.appendChild(el("p",{class:"lead"}, step.sub));
+
+  const card = el("div",{class:"card"});
+  // group fields into rows based on their `w` (out of 3 columns)
+  let i=0;
+  while(i<step.fields.length){
+    const f = step.fields[i];
+    if(f.w===3 || f.type==="textarea"){
+      card.appendChild(renderField(f));
+      i++;
+    } else if(f.w===2){
+      const row = el("div",{class:"row2"},[renderFieldInner(f)]);
+      i++;
+      if(step.fields[i] && step.fields[i].w===1){ row.appendChild(renderFieldInner(step.fields[i])); i++; }
+      card.appendChild(wrapRow(row));
+    } else {
+      // collect up to 3 consecutive w:1 fields
+      const group = [f]; i++;
+      while(group.length<3 && step.fields[i] && step.fields[i].w===1){ group.push(step.fields[i]); i++; }
+      const row = el("div",{class: group.length===3?"row3":"row2"});
+      group.forEach(g=>row.appendChild(renderFieldInner(g)));
+      card.appendChild(row);
+    }
+  }
+  wrap.appendChild(card);
+
+  const nav = el("div",{class:"nav-row"});
+  nav.appendChild(el("button",{class:"btn secondary", onclick:()=>{ currentStep--; render(); window.scrollTo(0,0); }}, "\u2190 Back"));
+  nav.appendChild(el("button",{class:"btn", onclick:()=>{
+    if(!validateStep(step)){ return; }
+    currentStep++; render(); window.scrollTo(0,0);
+  }}, currentStep===STEPS.length-1 ? "Review \u2192" : "Next \u2192"));
+  wrap.appendChild(nav);
+
+  container.appendChild(wrap);
+}
+
+function wrapRow(row){ return row; }
+
+function renderField(f){ return renderFieldInner(f); }
+
+function renderFieldInner(f){
+  const wrap = el("div",{class:"field"});
+  wrap.appendChild(el("label",{for:"f_"+f.key}, f.label + (f.required?" *":"")));
+  let input;
+  if(f.type==="select"){
+    input = el("select",{id:"f_"+f.key}, f.options.map(o=>el("option",{value:o}, o||"Select\u2026")));
+    input.value = formData[f.key] || "";
+    input.addEventListener("change", e=>{ formData[f.key]=e.target.value; });
+  } else if(f.type==="textarea"){
+    input = el("textarea",{id:"f_"+f.key});
+    input.value = formData[f.key] || "";
+    input.addEventListener("input", e=>{ formData[f.key]=e.target.value; });
+  } else if(f.type==="checkbox"){
+    const row = el("label",{class:"check-opt", style:"width:100%;"});
+    const cb = el("input",{type:"checkbox", id:"f_"+f.key});
+    cb.checked = !!formData[f.key];
+    cb.addEventListener("change", e=>{ formData[f.key]=e.target.checked; });
+    row.appendChild(cb);
+    row.appendChild(document.createTextNode(" Yes"));
+    wrap.innerHTML = ""; // checkbox fields render label differently
+    wrap.appendChild(el("label",{}, f.label));
+    wrap.appendChild(row);
+    return wrap;
+  } else {
+    input = el("input",{type:f.type, id:"f_"+f.key, placeholder:f.placeholder||""});
+    input.value = formData[f.key] || "";
+    input.addEventListener("input", e=>{ formData[f.key]=e.target.value; });
+  }
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function validateStep(step){
+  for(const f of step.fields){
+    if(f.required && !formData[f.key]){
+      alert("Please fill in: "+f.label);
+      document.getElementById("f_"+f.key)?.focus();
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ---------- Review ---------- */
+function renderReview(container){
+  const wrap = el("div",{class:"wrap"});
+  wrap.appendChild(el("div",{class:"eyebrow"}, "Step "+(STEPS.length+1)+" of "+(STEPS.length+1)));
+  wrap.appendChild(el("h1",{},"Review & Generate"));
+  wrap.appendChild(el("p",{class:"lead"},"Here's a quick summary. If anything needs fixing, go back \u2014 otherwise, generate your paperwork below."));
+
+  const card = el("div",{class:"card"});
+  const summaryFields = ["firstName","lastName","dob","ssn","street","city","state","zip","email","phone","jobTitle"];
+  STEPS.forEach(step=>{
+    step.fields.forEach(f=>{
+      if(formData[f.key]){
+        const row = el("div",{style:"display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px;"},[
+          el("span",{style:"color:var(--ink-soft);"}, f.label),
+          el("span",{style:"font-weight:600;text-align:right;max-width:60%;"}, f.type==="checkbox" ? "Yes" : String(formData[f.key]))
+        ]);
+        card.appendChild(row);
+      }
+    });
+  });
+  wrap.appendChild(card);
+
+  const nav = el("div",{class:"nav-row"});
+  nav.appendChild(el("button",{class:"btn secondary", onclick:()=>{ currentStep=STEPS.length-1; render(); window.scrollTo(0,0); }}, "\u2190 Back to edit"));
+  nav.appendChild(el("button",{class:"btn", onclick:()=>{ currentStep=STEPS.length+1; render(); window.scrollTo(0,0); generateAll(); }}, "Generate My Paperwork \u2192"));
+  wrap.appendChild(nav);
+
+  container.appendChild(wrap);
+}
+
+/* ---------- Generating / Done ---------- */
+function renderGenerate(container){
+  const wrap = el("div",{class:"wrap"});
+  wrap.appendChild(el("div",{class:"eyebrow"},"Almost done"));
+  wrap.appendChild(el("h1",{},"Filling out your forms\u2026"));
+  wrap.appendChild(el("p",{class:"lead"},"This all happens in your browser \u2014 nothing is uploaded anywhere."));
+
+  const libWarning = el("div",{id:"libWarning"});
+  wrap.appendChild(libWarning);
+
+  const card = el("div",{class:"card", id:"genStatusCard"});
+  DOCS.forEach(d=>{
+    const row = el("div",{class:"status-line", id:"status_"+d.id},[
+      el("span",{class:"icon spin"}),
+      el("span",{}, d.label)
+    ]);
+    card.appendChild(row);
+    card.appendChild(el("div",{id:"detail_"+d.id, style:"font-family:var(--mono);font-size:11px;color:var(--pulse);padding-left:24px;margin-top:-6px;margin-bottom:4px;word-break:break-word;"}));
+  });
+  wrap.appendChild(card);
+
+  const doneArea = el("div",{id:"doneArea"});
+  wrap.appendChild(doneArea);
+
+  container.appendChild(wrap);
+}
+
+function updateDocStatus(docId, status, detail){
+  const row = document.getElementById("status_"+docId);
+  if(!row) return;
+  row.classList.toggle("done", status==="done");
+  const icon = row.querySelector(".icon");
+  if(status==="done"){ icon.className="icon"; icon.textContent="\u2713"; }
+  else if(status==="error"){ icon.className="icon"; icon.textContent="\u26a0"; icon.style.color="var(--pulse)"; }
+  else { icon.className="icon spin"; }
+  const detailEl = document.getElementById("detail_"+docId);
+  if(detailEl) detailEl.textContent = detail || "";
+}
+
+/* =========================================================================
+   PDF FILL ENGINE
+========================================================================= */
+async function fillDoc(doc, data){
+  let resp;
+  try{
+    resp = await fetch(doc.file);
+  }catch(networkErr){
+    throw new Error("Network error fetching "+doc.file+" \u2014 "+networkErr.message);
+  }
+  if(!resp.ok){
+    throw new Error("HTTP "+resp.status+" loading "+doc.file+" \u2014 check the file actually exists at that path on your deployed site.");
+  }
+  const bytes = await resp.arrayBuffer();
+
+  let pdfDoc;
+  try{
+    pdfDoc = await PDFLib.PDFDocument.load(bytes);
+  }catch(parseErr){
+    throw new Error("Couldn't parse "+doc.file+" as a PDF \u2014 "+parseErr.message);
+  }
+  const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+  const pages = pdfDoc.getPages();
+
+  doc.overlays.forEach(ov=>{
+    const page = pages[ov.page];
+    if(!page) return;
+    let val = data[ov.key];
+    if(ov.fmt) val = ov.fmt(val);
+    if(val==null || val==="") return;
+    const y = page.getHeight() - ov.bottom;
+    try{
+      page.drawText(String(val), { x: ov.x, y, size: ov.size||9, font, color: PDFLib.rgb(0.1,0.16,0.13) });
+    }catch(e){ console.warn("Failed to draw", doc.id, ov.key, e); }
+  });
+
+  return pdfDoc.save();
+}
+
+async function generateAll(){
+  // Guard: make sure the CDN libraries actually loaded before doing anything else.
+  // If they didn't (network block, ad blocker, CDN hiccup), fail loudly and clearly
+  // instead of silently hanging with every row stuck on a spinner.
+  if(typeof PDFLib === "undefined" || typeof JSZip === "undefined"){
+    const missing = [typeof PDFLib === "undefined" ? "pdf-lib" : null, typeof JSZip === "undefined" ? "JSZip" : null].filter(Boolean).join(" and ");
+    document.getElementById("libWarning").appendChild(el("div",{class:"callout warn"},
+      "Couldn't load the "+missing+" library from cdnjs.cloudflare.com. This usually means an ad blocker, browser extension, or network filter is blocking that script \u2014 try disabling ad blockers for this page, or try a different network/browser, then reload."));
+    DOCS.forEach(d=>updateDocStatus(d.id,"error","Blocked: required library didn't load"));
+    return;
+  }
+
+  let data;
+  try{
+    data = computeDerived(formData);
+  }catch(e){
+    document.getElementById("libWarning").appendChild(el("div",{class:"callout warn"}, "Something went wrong preparing your answers: "+e.message));
+    return;
+  }
+
+  const zip = new JSZip();
+  let anyError = false;
+  let anySuccess = false;
+
+  for(const doc of DOCS){
+    updateDocStatus(doc.id, "working");
+    try{
+      const bytes = await fillDoc(doc, data);
+      zip.file(doc.id + ".pdf", bytes);
+      updateDocStatus(doc.id, "done");
+      anySuccess = true;
+    }catch(e){
+      console.error(doc.id, e);
+      updateDocStatus(doc.id, "error", e.message || String(e));
+      anyError = true;
+    }
+  }
+
+  const doneArea = document.getElementById("doneArea");
+  doneArea.innerHTML = "";
+
+  if(!anySuccess){
+    doneArea.appendChild(el("div",{class:"callout warn"}, "Every document failed to generate \u2014 nothing to download. This is almost always a file path problem: the \u201cassets\u201d folder isn't where index.html expects it on your deployed site. Check the red text under each item above for the exact reason, and try opening one of those file paths directly in your browser to confirm."));
+    return;
+  }
+
+  const blob = await zip.generateAsync({type:"blob"});
+  const url = URL.createObjectURL(blob);
+  const fname = ((formData.lastName||"employee")+"_"+(formData.firstName||"")).replace(/\s+/g,"_").toLowerCase() + "_onboarding_paperwork.zip";
+
+  doneArea.appendChild(el("div",{class:"callout"+(anyError?" warn":"")}, anyError
+    ? "Most forms generated successfully, but a few had trouble \u2014 check the \u26a0 marks and red detail text above. You can still download what did complete below."
+    : "All done! Download your completed paperwork below, review it, and sign where indicated."));
+  const dlBtn = el("a",{class:"btn", href:url, download:fname, style:"text-decoration:none;margin-top:10px;display:inline-flex;"}, "\u2b07 Download All Paperwork (.zip)");
+  doneArea.appendChild(dlBtn);
+  doneArea.appendChild(el("div",{style:"margin-top:16px;"}, el("button",{class:"btn secondary", onclick:()=>{
+    if(confirm("Start over with a blank form?")){ formData={}; currentStep=-1; render(); window.scrollTo(0,0); }
+  }}, "Start Over")));
+}
+
+/* =========================================================================
+   MAIN RENDER
+========================================================================= */
+function render(){
+  app.innerHTML = "";
+  app.appendChild(topBar());
+  const main = el("div",{class:"main"});
+  if(currentStep === -1) renderLanding(main);
+  else if(currentStep >= 0 && currentStep < STEPS.length) renderStep(main);
+  else if(currentStep === STEPS.length) renderReview(main);
+  else renderGenerate(main);
+  app.appendChild(main);
+}
+
+render();
+</script>
+</body>
+</html>
